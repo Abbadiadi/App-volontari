@@ -1,146 +1,97 @@
-// VERSIONE 2.1: CON FUNZIONE DI LOGOUT
+// Versione 2.1 - Ordinamento corretto
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7zpWPsDEIwoZwoh5A7lokHdId3gAIubyGMlau1NCWW3QSgqplN_skakU6EPRprY8ccA/exec"; // ASSICURATI CHE QUI CI SIA IL TUO URL CORRETTO!
+function doGet(e) {
+  const userEmail = e.parameter.email;
+  
+  if (!userEmail) {
+    return ContentService.createTextOutput(JSON.stringify({ "error": "Email non fornita" })).setMimeType(ContentService.MimeType.JSON);
+  }
 
-// Riferimenti agli elementi HTML
-const loginScreen = document.getElementById('login-screen');
-const mainApp = document.getElementById('main-app');
-const emailInput = document.getElementById('email-input');
-const loginButton = document.getElementById('login-button');
-const errorMessage = document.getElementById('error-message');
-const loadingSpinner = document.getElementById('loading-spinner');
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const volontariSheet = ss.getSheetByName("Volontari");
+    const turniSheet = ss.getSheetByName("Turni");
+    const assegnazioniSheet = ss.getSheetByName("Assegnazioni");
 
-// Riferimenti agli elementi dell'app principale
-const mainTitle = document.getElementById('main-title');
-const turniList = document.getElementById('turni-list');
-const allViews = document.querySelectorAll('.view');
-const logoutButton = document.getElementById('logout-button'); // NUOVO RIFERIMENTO
+    const volontariData = volontariSheet.getDataRange().getValues();
+    const turniData = turniSheet.getDataRange().getValues();
+    const assegnazioniData = assegnazioniSheet.getDataRange().getValues();
 
-// Riferimenti ai pulsanti di navigazione
-const navButtons = document.querySelectorAll('.nav-button');
-const navTurni = document.getElementById('nav-turni');
-const navProgramma = document.getElementById('nav-programma');
-const navChat = document.getElementById('nav-chat');
-const navPlanimetria = document.getElementById('nav-planimetria');
+    const volontariHeaders = volontariData.shift();
+    const turniHeaders = turniData.shift();
+    const assegnazioniHeaders = assegnazioniData.shift();
 
+    const emailVolontarioIndex = volontariHeaders.indexOf("Email");
+    const ruoloVolontarioIndex = volontariHeaders.indexOf("Ruolo");
+    const nomeVolontarioIndex = volontariHeaders.indexOf("Nome");
 
-// === NUOVA FUNZIONE DI LOGOUT ===
-function logout() {
-    // 1. Rimuove l'email salvata dalla memoria del browser
-    localStorage.removeItem('userEmail');
-    // 2. Ricarica la pagina. Questo riporterà automaticamente alla schermata di login
-    // perché non troverà più un'email salvata. È il modo più pulito e sicuro.
-    location.reload();
-}
-
-// Aggiunge l'evento di click al pulsante di logout
-logoutButton.addEventListener('click', logout);
-// ================================
-
-
-// === LOGICA CAMBIO SCHERMATA (invariata) ===
-function showView(viewId) {
-    allViews.forEach(view => {
-        view.classList.add('hidden');
-        view.classList.remove('active-view');
-    });
-    const targetView = document.getElementById(viewId);
-    if (targetView) {
-        targetView.classList.remove('hidden');
-        targetView.classList.add('active-view');
-    }
-    navButtons.forEach(button => {
-        button.classList.remove('active');
-    });
-    const activeButton = document.getElementById(`nav-${viewId.split('-')[1]}`);
-    if (activeButton) {
-        activeButton.classList.add('active');
-    }
-    mainTitle.textContent = activeButton.querySelector('span').textContent;
-}
-
-navTurni.addEventListener('click', () => showView('view-turni'));
-navProgramma.addEventListener('click', () => showView('view-programma'));
-navChat.addEventListener('click', () => showView('view-chat'));
-navPlanimetria.addEventListener('click', () => showView('view-planimetria'));
-// =======================================
-
-
-// === LOGICA DI LOGIN E CARICAMENTO DATI (invariata) ===
-async function caricaDati(email) {
-    loadingSpinner.classList.remove('hidden');
-    loginScreen.classList.add('hidden');
-    mainApp.classList.add('hidden');
+    const idTurnoAssegnazioniIndex = assegnazioniHeaders.indexOf("ID_Turno");
+    const emailAssegnazioniIndex = assegnazioniHeaders.indexOf("Email_Volontario");
     
-    try {
-        const response = await fetch(`${SCRIPT_URL}?email=${encodeURIComponent(email)}`);
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
+    const idTurnoTurniIndex = turniHeaders.indexOf("ID_Turno");
+    const dataInizioTurniIndex = turniHeaders.indexOf("Data Inizio");
+    const oraInizioTurniIndex = turniHeaders.indexOf("Ora Inizio");
 
-        loginScreen.classList.add('hidden');
-        mainApp.classList.remove('hidden');
-        
-        mostraTurni(data);
+    // --- LOGICA PRINCIPALE ---
 
-        if (data.user.ruolo === 'Admin' || data.user.ruolo === 'Responsabile') {
-            console.log("Utente con privilegi elevati. Qui abiliteremo le funzioni speciali.");
-        }
-        
-    } catch (error) {
-        console.error("Errore nel caricamento dati:", error);
-        // Se il caricamento fallisce (es. utente rimosso), esegui il logout per pulire
-        logout();
-    } finally {
-        loadingSpinner.classList.add('hidden');
+    let userData = null;
+    for (let i = 0; i < volontariData.length; i++) {
+      if (volontariData[i][emailVolontarioIndex].toLowerCase() === userEmail.toLowerCase()) {
+        userData = {
+          nome: volontariData[i][nomeVolontarioIndex],
+          ruolo: volontariData[i][ruoloVolontarioIndex]
+        };
+        break;
+      }
     }
-}
-
-// Funzione specifica per mostrare solo i turni (invariata)
-function mostraTurni(data) {
-    turniList.innerHTML = '';
-    if (data.turni.length === 0) {
-        turniList.innerHTML = '<p>Nessun turno assegnato per oggi.</p>';
-        return;
+    
+    if (!userData) {
+       return ContentService.createTextOutput(JSON.stringify({ "error": "Utente non trovato" })).setMimeType(ContentService.MimeType.JSON);
     }
-    data.turni.forEach(turno => {
-        const card = document.createElement('div');
-        card.className = 'turno-card';
-        if (turno.Categoria) {
-            const categoriaClasse = 'categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-');
-            card.classList.add(categoriaClasse);
+
+    const turniAssegnatiIds = assegnazioniData
+      .filter(row => row[emailAssegnazioniIndex].toLowerCase() === userEmail.toLowerCase())
+      .map(row => row[idTurnoAssegnazioniIndex]);
+
+    const turniDetails = [];
+    if (turniAssegnatiIds.length > 0) {
+      for (let i = 0; i < turniData.length; i++) {
+        const turnoRow = turniData[i];
+        const currentIdTurno = turnoRow[idTurnoTurniIndex];
+        if (turniAssegnatiIds.includes(currentIdTurno)) {
+          let turno = {};
+          turniHeaders.forEach((header, index) => {
+            turno[header] = turnoRow[index];
+          });
+          turniDetails.push(turno);
         }
-        const orario = `${turno['Ora Inizio']} - ${turno['Ora Fine']}`;
-        card.innerHTML = `
-            <h3>${turno['Nome Turno']}</h3>
-            <p class="turno-orario">${orario}</p>
-            <p class="turno-luogo">📍 ${turno.Luogo}</p>
-            <p class="turno-descrizione">${turno.Descrizione}</p>
-        `;
-        turniList.appendChild(card);
+      }
+    }
+    
+    // --- NUOVA LOGICA DI ORDINAMENTO CORRETTA ---
+    turniDetails.sort((a, b) => {
+      // Funzione per convertire data e ora in un oggetto Date di JavaScript
+      const parseDateTime = (turno) => {
+        const dateParts = turno['Data Inizio'].split('/');
+        const timeParts = turno['Ora Inizio'].split(':');
+        // Formato: Anno, Mese (0-11), Giorno, Ora, Minuti
+        return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+      };
+      
+      const dateA = parseDateTime(a);
+      const dateB = parseDateTime(b);
+      
+      return dateA - dateB; // Ordina confrontando gli oggetti Date
     });
+
+    const finalResponse = {
+      user: userData,
+      turni: turniDetails
+    };
+
+    return ContentService.createTextOutput(JSON.stringify(finalResponse)).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
+  }
 }
-
-// --- Eventi di Login e Caricamento Iniziale (invariati) ---
-loginButton.addEventListener('click', () => {
-    const email = emailInput.value.trim();
-    if (email) {
-        localStorage.setItem('userEmail', email);
-        caricaDati(email);
-    }
-});
-
-emailInput.addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        loginButton.click();
-    }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const savedEmail = localStorage.getItem('userEmail');
-    if (savedEmail) {
-        caricaDati(savedEmail);
-    } else {
-        loginScreen.classList.remove('hidden');
-    }
-});
