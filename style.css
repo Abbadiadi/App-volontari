@@ -1,78 +1,142 @@
-/* ...tutto il codice precedente resta uguale... */
-/* Aggiungi/Sostituisci solo queste regole nella sezione 5. Schermata Principale App */
+/* =================================================================
+   APP VOLONTARI - FOGLIO DI STILE PRINCIPALE
+   ================================================================= */
 
-/* SEZIONE 5 AGGIORNATA */
+/* ----------------------------------
+   1. Importazioni e Variabili Globali
+   ---------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
 
-.profile-header {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 1.2em;
-}
-
-/* Stile base delle card dei turni, migliorato */
-.turno-card {
-    background-color: var(--colore-card);
-    border-radius: 16px; /* Angoli più arrotondati */
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Ombra più morbida */
-    border-left: 6px solid var(--colore-grigio-testo); /* Colore di default */
-    transition: all 0.3s ease; /* Transizione per tutti gli effetti */
-    cursor: pointer;
+:root {
+    --colore-principale: #002734;
+    --colore-pulsante: #cda434;
+    --colore-pulsante-hover: #e6c56d;
+    --colore-sfondo-pagina: #f4f6f8;
+    --colore-card: #ffffff;
+    --colore-testo-header: #ffffff;
+    --colore-grigio-testo: #6c757d;
+    --colore-bordo-default: #ccc;
+    --colore-errore: #d9534f;
 }
 
-/* NUOVO: Stile per il turno che si sta svolgendo ora */
-.turno-card.attuale {
-    border-color: var(--colore-pulsante);
-    transform: scale(1.02); /* Lo rende leggermente più grande per evidenziarlo */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-}
-
-/* NUOVO: Stile per i turni già passati */
-.turno-card.passato {
-    opacity: 0.65;
-    background-color: #f9f9f9;
-    filter: grayscale(50%); /* Rende i colori più spenti */
-}
-
-.turno-card.passato h3, .turno-card.passato .turno-orario {
-    text-decoration: line-through; /* Barra il testo */
-}
-
-/* Stili interni alla card (invariati) */
-.turno-card h3 {
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-.turno-orario {
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-bottom: 10px;
-}
-.turno-luogo {
-    font-style: italic;
-    color: #555;
-    margin-bottom: 10px;
-}
-/* La descrizione ora è nascosta di default */
-.turno-descrizione {
+/* ----------------------------------
+   2. Stili Generali e Animazioni
+   ---------------------------------- */
+body {
+    font-family: 'Quicksand', sans-serif;
+    margin: 0;
+    background-color: var(--colore-sfondo-pagina);
     color: #333;
-    display: none; /* NASCOSTO DI DEFAULT */
-    margin-top: 15px;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
-}
-/* Stile per mostrare la descrizione quando la card è aperta */
-.turno-card.aperta .turno-descrizione {
-    display: block; /* MOSTRATO AL CLICK */
+    padding-bottom: 100px;
 }
 
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
-/* Colori specifici per categoria turno */
+/* ----------------------------------
+   3. Schermata di Login
+   ---------------------------------- */
+.login-container { text-align: center; }
+.login-container .app-header {
+    padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); background-color: var(--colore-principale); color: var(--colore-testo-header);
+}
+.login-container .logo { height: 110px; margin-bottom: 6px; }
+.login-card {
+    background-color: var(--colore-card); padding: 40px; border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); border-top: 5px solid var(--colore-pulsante);
+    margin: 50px 20px; max-width: 400px; margin-left: auto; margin-right: auto;
+}
+.login-container h2 { font-size: 28px; font-weight: 700; margin-bottom: 15px; }
+.login-subtitle { font-size: 15px; color: var(--colore-grigio-testo); margin-top: -15px; margin-bottom: 30px; line-height: 1.5; }
+#email-input {
+    width: 100%; padding: 15px 20px; margin-bottom: 20px; border: 1px solid var(--colore-bordo-default);
+    border-radius: 50px; font-size: 16px; box-sizing: border-box; font-family: 'Quicksand', sans-serif; text-align: center;
+}
+#email-input:focus { border-color: var(--colore-principale); box-shadow: 0 0 8px rgba(0, 39, 52, 0.2); outline: none; }
+#login-button {
+    background-image: linear-gradient(to top, var(--colore-pulsante), var(--colore-pulsante-hover)); color: white;
+    padding: 15px 30px; border: none; border-radius: 50px; font-size: 18px; font-weight: 700;
+    cursor: pointer; font-family: 'Quicksand', sans-serif; transition: transform 0.2s ease-in-out; width: 100%; box-sizing: border-box;
+}
+#login-button:hover { transform: scale(1.05); }
+.error-message { color: var(--colore-errore); margin-top: 15px; }
+
+
+/* =================================================================
+   SEZIONE APP PRINCIPALE (POST-LOGIN)
+   ================================================================= */
+.app-header-main {
+    background-color: var(--colore-principale); color: var(--colore-testo-header); padding: 15px 20px;
+    text-align: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.app-header-main h1 { margin: 0; font-size: 22px; }
+.container { padding: 20px; }
+.view { display: none; } /* Viste nascoste di default */
+.view.active-view { display: block; } /* Mostra solo la vista attiva */
+
+.top-right-nav {
+    position: absolute; top: 50%; right: 15px; transform: translateY(-50%); display: flex; gap: 10px;
+}
+#logout-button {
+    background: transparent; border: 1px solid rgba(255, 255, 255, 0.5); color: white;
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; transition: background-color 0.2s ease;
+}
+#logout-button:hover { background-color: rgba(255, 255, 255, 0.15); }
+#logout-button svg { width: 20px; height: 20px; }
+
+.bottom-nav {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px;
+    background-color: rgba(255, 255, 255, 0.95); padding: 10px; border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); backdrop-filter: blur(10px); z-index: 100;
+}
+.nav-button {
+    background-color: transparent; border: none; display: flex; flex-direction: column;
+    align-items: center; padding: 5px 10px; border-radius: 15px; color: var(--colore-grigio-testo);
+    cursor: pointer; transition: all 0.2s ease-in-out;
+}
+.nav-button svg { width: 24px; height: 24px; margin-bottom: 2px; }
+.nav-button span { font-size: 12px; font-family: 'Quicksand', sans-serif; font-weight: 700; }
+.nav-button:hover { background-color: #e9ecef; }
+.nav-button.active { color: var(--colore-principale); }
+
+.whatsapp-button {
+    display: block; background-color: #25D366; color: white; padding: 15px; text-align: center;
+    border-radius: 50px; text-decoration: none; font-weight: 700; margin-top: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.chat-info { text-align: center; color: var(--colore-grigio-testo); margin-top: 15px; }
+
+.turno-card {
+    background-color: var(--colore-card); border-radius: 16px; padding: 20px; margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border-left: 6px solid var(--colore-grigio-testo);
+    transition: all 0.3s ease; cursor: pointer;
+}
+.turno-card.attuale {
+    border-color: var(--colore-pulsante); transform: scale(1.02); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+.turno-card.passato {
+    opacity: 0.65; background-color: #f9f9f9; filter: grayscale(50%);
+}
+.turno-card.passato h3, .turno-card.passato .turno-orario { text-decoration: line-through; }
+.turno-card h3 { margin-top: 0; margin-bottom: 5px; }
+.turno-orario { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
+.turno-luogo { font-style: italic; color: #555; margin-bottom: 10px; }
+.turno-descrizione { color: #333; display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+.turno-card.aperta .turno-descrizione { display: block; }
 .turno-card.categoria-accoglienza { border-left-color: #17a2b8; }
 .turno-card.categoria-sport { border-left-color: #fd7e14; }
 .turno-card.categoria-cerimonia { border-left-color: #ffc107; }
 .turno-card.categoria-maratonina { border-left-color: #28a745; }
 .turno-card.categoria-staffette { border-left-color: #dc3545; }
 
-/* ...il resto del file css rimane uguale... */
+/* ----------------------------------
+   7. Classi di Utilità
+   ---------------------------------- */
+.hidden { display: none !important; }
+.loading-spinner {
+    border: 5px solid #f3f3f3; border-top: 5px solid var(--colore-principale);
+    border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 50px auto;
+}
