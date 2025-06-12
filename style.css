@@ -183,7 +183,7 @@ body {
 .login-card {
   background-color: var(--colore-card); /* Sfondo bianco */
   padding: 40px; /* Più spazio all'interno */
-  border-radius: 16px; /* Angoli più arrotondati */
+  border-radius: 30px; /* Angoli più arrotondati */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Ombra più pronunciata */
   border-top: 5px solid var(--colore-pulsante); /* Bordo decorativo superiore color oro */
 }
