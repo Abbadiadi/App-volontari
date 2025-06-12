@@ -1,6 +1,6 @@
-// VERSIONE 3.0: Interfaccia a schede e turni dinamici
+// VERSIONE 3.2 - COMPLETA E CORRETTA
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzB_OGRtu0C0dldguVULzacJeLjDvGzNe_PSF7VqFj6UMzSnG823BXt1LAc7mPH0nm0tg/exec"; // IMPORTANTE!
+const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT"; // IMPORTANTE! Assicurati che qui ci sia il tuo URL corretto
 
 // Riferimenti agli elementi HTML
 const loginScreen = document.getElementById('login-screen');
@@ -14,28 +14,36 @@ const turniList = document.getElementById('turni-list');
 const allViews = document.querySelectorAll('.view');
 const logoutButton = document.getElementById('logout-button');
 const navButtons = document.querySelectorAll('.nav-button');
+const navAdmin = document.getElementById('nav-admin');
 
 // === LOGICA DI NAVIGAZIONE ===
 function showView(viewId) {
+    // Nasconde tutte le "schermate"
     allViews.forEach(view => view.style.display = 'none');
+    
+    // Mostra solo la schermata richiesta
     const targetView = document.getElementById(viewId);
     if (targetView) targetView.style.display = 'block';
 
+    // Aggiorna lo stato "attivo" e il titolo dell'header
     navButtons.forEach(button => {
         button.classList.remove('active');
-        if (button.id === `nav-${viewId.split('-')[1]}`) {
+        const buttonViewName = button.id.split('-')[1]; // es. "turni" da "nav-turni"
+        if (`view-${buttonViewName}` === viewId) {
             button.classList.add('active');
             mainTitle.textContent = button.querySelector('span').textContent;
         }
     });
 }
 
+// Aggiunge gli eventi di click a tutti i pulsanti di navigazione
 document.querySelectorAll('.nav-button').forEach(button => {
     button.addEventListener('click', () => {
-        const viewName = button.id.split('-')[1]; // es. "turni" da "nav-turni"
+        const viewName = button.id.split('-')[1];
         showView(`view-${viewName}`);
     });
 });
+
 
 // === LOGICA DI AUTENTICAZIONE E DATI ===
 function logout() {
@@ -55,19 +63,23 @@ async function caricaDati(email) {
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
+        // Se i dati sono stati caricati con successo...
         loginScreen.style.display = 'none';
         mainApp.style.display = 'block';
-        showView('view-turni'); // Mostra la vista dei turni di default
+        showView('view-turni'); // Mostra la vista dei turni come default
         
-        mostraTurni(data);
+        mostraTurni(data); // Popola la vista dei turni
 
+        // Controlla il ruolo e mostra il pulsante Admin se necessario
         if (data.user.ruolo === 'Admin' || data.user.ruolo === 'Responsabile') {
-            console.log("Utente con privilegi. Funzioni speciali da abilitare.");
+            console.log("Utente con privilegi. Funzioni speciali abilitate.");
+            navAdmin.classList.remove('hidden'); // Mostra il pulsante Admin
         }
         
     } catch (error) {
         console.error("Errore nel caricamento dati:", error);
-        logout();
+        alert("Si è verificato un errore: " + error.message);
+        logout(); // Se c'è un errore, torna al login
     } finally {
         loadingSpinner.classList.add('hidden');
     }
@@ -76,12 +88,14 @@ async function caricaDati(email) {
 function mostraTurni(data) {
     turniList.innerHTML = '';
     if (data.turni.length === 0) {
-        turniList.innerHTML = '<p>Nessun turno assegnato.</p>';
+        turniList.innerHTML = '<p style="text-align: center; color: var(--colore-grigio-testo);">Nessun turno assegnato.</p>';
         return;
     }
 
     const now = new Date();
-    const turniFuturi = [], turniPassati = [];
+    
+    const turniFuturi = [];
+    const turniPassati = [];
     let turnoAttuale = null;
 
     const parseDateTime = (dateStr, timeStr) => {
@@ -93,32 +107,50 @@ function mostraTurni(data) {
     data.turni.forEach(turno => {
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
-        if (now >= inizio && now <= fine) turnoAttuale = turno;
-        else if (now > fine) turniPassati.push(turno);
-        else turniFuturi.push(turno);
+        if (now >= inizio && now <= fine) {
+            turnoAttuale = turno;
+        } else if (now > fine) {
+            turniPassati.push(turno);
+        } else {
+            turniFuturi.push(turno);
+        }
     });
+    
     turniPassati.reverse();
 
-    const turniOrdinati = [];
-    if (turnoAttuale) turniOrdinati.push(turnoAttuale);
-    turniOrdinati.push(...turniFuturi, ...turniPassati);
+    const turniOrdinati = [
+        ...(turnoAttuale ? [turnoAttuale] : []),
+        ...turniFuturi,
+        ...turniPassati
+    ];
 
     turniOrdinati.forEach(turno => {
         const card = document.createElement('div');
         card.className = 'turno-card';
+
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
-        if (now >= inizio && now <= fine) card.classList.add('attuale');
-        else if (now > fine) card.classList.add('passato');
-        if (turno.Categoria) card.classList.add('categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-'));
+        if (now >= inizio && now <= fine) {
+            card.classList.add('attuale');
+        } else if (now > fine) {
+            card.classList.add('passato');
+        }
+
+        if (turno.Categoria) {
+            const categoriaClasse = 'categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-');
+            card.classList.add(categoriaClasse);
+        }
         
-        card.innerHTML = `<h3>${turno['Nome Turno']}</h3>
-                          <p class="turno-orario">${turno['Ora Inizio']} - ${turno['Ora Fine']}</p>
-                          <p class="turno-luogo">📍 ${turno.Luogo}</p>
-                          <p class="turno-descrizione">${turno.Descrizione}</p>`;
+        const orario = `${turno['Ora Inizio']} - ${turno['Ora Fine']}`;
+        card.innerHTML = `
+            <h3>${turno['Nome Turno']}</h3>
+            <p class="turno-orario">${orario}</p>
+            <p class="turno-luogo">📍 ${turno.Luogo}</p>
+            <p class="turno-descrizione">${turno.Descrizione}</p>`;
         turniList.appendChild(card);
     });
 }
+
 
 // === GESTIONE EVENTI ===
 loginButton.addEventListener('click', () => {
@@ -128,11 +160,19 @@ loginButton.addEventListener('click', () => {
         caricaDati(email);
     }
 });
-emailInput.addEventListener('keyup', e => e.key === 'Enter' && loginButton.click());
+
+emailInput.addEventListener('keyup', e => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        loginButton.click();
+    }
+});
 
 document.addEventListener('click', e => {
     const card = e.target.closest('.turno-card');
-    if (card) card.classList.toggle('aperta');
+    if (card) {
+        card.classList.toggle('aperta');
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
