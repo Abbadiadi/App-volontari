@@ -1,138 +1,78 @@
-/* =================================================================
-   APP VOLONTARI - FOGLIO DI STILE PRINCIPALE
-   ================================================================= */
+/* ...tutto il codice precedente resta uguale... */
+/* Aggiungi/Sostituisci solo queste regole nella sezione 5. Schermata Principale App */
 
-/* ----------------------------------
-   1. Importazioni e Variabili Globali
-   ---------------------------------- */
+/* SEZIONE 5 AGGIORNATA */
 
-/* Import del font da Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
-
-/* Variabili dei colori ("Pannello di controllo" grafico) */
-:root {
-    --colore-principale: #002734;
-    --colore-pulsante: #cda434;
-    --colore-pulsante-hover: #e6c56d;
-    --colore-sfondo-pagina: #f4f6f8;
-    --colore-card: #ffffff;
-    --colore-testo-header: #ffffff;
-    --colore-grigio-testo: #6c757d;
-    --colore-bordo-default: #ccc;
-    --colore-errore: #d9534f;
-}
-
-/* ----------------------------------
-   2. Stili Generali e Animazioni
-   ---------------------------------- */
-
-/* Stile base per tutto il corpo della pagina */
-body {
-    font-family: 'Quicksand', sans-serif;
-    margin: 0;
-    background-color: var(--colore-sfondo-pagina);
-    /* Regole per l'immagine di sfondo */
-    background-image: linear-gradient(rgba(244, 246, 248, 0.9), rgba(244, 246, 248, 0.9)), url('sfondo.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #333;
-}
-
-/* ----------------------------------
-   3. Layout Principale (Header)
-   ---------------------------------- */
-
-.app-header {
-    background-color: var(--colore-principale);
-    color: var(--colore-testo-header);
-    padding: 20px;
+.profile-header {
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    font-size: 1.2em;
 }
 
-.logo {
-    height: 110px;
-    margin-bottom: 6px;
-}
-
-/* ----------------------------------
-   4. Schermata di Login
-   ---------------------------------- */
-
-.login-container {
-    padding: 20px;
-    text-align: center;
-    margin-top: 50px;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.login-card {
+/* Stile base delle card dei turni, migliorato */
+.turno-card {
     background-color: var(--colore-card);
-    padding: 40px;
-    border-radius: 30px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    border-top: 5px solid var(--colore-pulsante);
-}
-
-.login-container h2 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.login-subtitle {
-    font-size: 15px;
-    color: var(--colore-grigio-testo);
-    margin-top: -15px;
-    margin-bottom: 30px;
-    line-height: 1.5;
-}
-
-#email-input {
-    width: 100%;
-    padding: 15px 20px;
+    border-radius: 16px; /* Angoli più arrotondati */
+    padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid var(--colore-bordo-default);
-    border-radius: 50px;
-    font-size: 16px;
-    box-sizing: border-box;
-    font-family: 'Quicksand', sans-serif;
-    text-align: center;
-}
-
-#email-input:focus {
-    border-color: var(--colore-principale);
-    box-shadow: 0 0 8px rgba(0, 39, 52, 0.2);
-    outline: none;
-}
-
-#login-button {
-    background-image: linear-gradient(to top, var(--colore-pulsante), var(--colore-pulsante-hover));
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 50px;
-    font-size: 18px;
-    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Ombra più morbida */
+    border-left: 6px solid var(--colore-grigio-testo); /* Colore di default */
+    transition: all 0.3s ease; /* Transizione per tutti gli effetti */
     cursor: pointer;
-    font-family: 'Quicksand', sans-serif;
-    transition: transform 0.2s ease-in-out;
-    width: 100%;
-    box-sizing: border-box;
 }
 
-#login-button:hover {
-    transform: scale(1.05);
+/* NUOVO: Stile per il turno che si sta svolgendo ora */
+.turno-card.attuale {
+    border-color: var(--colore-pulsante);
+    transform: scale(1.02); /* Lo rende leggermente più grande per evidenziarlo */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
-.error-message {
-    color: var(--colore-errore);
+/* NUOVO: Stile per i turni già passati */
+.turno-card.passato {
+    opacity: 0.65;
+    background-color: #f9f9f9;
+    filter: grayscale(50%); /* Rende i colori più spenti */
+}
+
+.turno-card.passato h3, .turno-card.passato .turno-orario {
+    text-decoration: line-through; /* Barra il testo */
+}
+
+/* Stili interni alla card (invariati) */
+.turno-card h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.turno-orario {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+.turno-luogo {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10px;
+}
+/* La descrizione ora è nascosta di default */
+.turno-descrizione {
+    color: #333;
+    display: none; /* NASCOSTO DI DEFAULT */
     margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
 }
+/* Stile per mostrare la descrizione quando la card è aperta */
+.turno-card.aperta .turno-descrizione {
+    display: block; /* MOSTRATO AL CLICK */
+}
+
+
+/* Colori specifici per categoria turno */
+.turno-card.categoria-accoglienza { border-left-color: #17a2b8; }
+.turno-card.categoria-sport { border-left-color: #fd7e14; }
+.turno-card.categoria-cerimonia { border-left-color: #ffc107; }
+.turno-card.categoria-maratonina { border-left-color: #28a745; }
+.turno-card.categoria-staffette { border-left-color: #dc3545; }
+
+/* ...il resto del file css rimane uguale... */
