@@ -1,6 +1,6 @@
 // VERSIONE 3.2 - COMPLETA E CORRETTA
 
-const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT"; // IMPORTANTE! Assicurati che qui ci sia il tuo URL corretto
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzB_OGRtu0C0dldguVULzacJeLjDvGzNe_PSF7VqFj6UMzSnG823BXt1LAc7mPH0nm0tg/exec"; // IMPORTANTE! Assicurati che qui ci sia il tuo URL corretto
 
 // Riferimenti agli elementi HTML
 const loginScreen = document.getElementById('login-screen');
