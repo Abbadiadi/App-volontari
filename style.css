@@ -15,7 +15,7 @@ body {
     --colore-principale: #002734;      /* NUOVO COLORE HEADER! (Blu Abbadiadi) */
     --colore-pulsante: #cda434;        /* NUOVO COLORE PULSANTE! (Oro Abbadiadi) */
     --colore-secondario: #6f42c1;     /* Viola - Usato per i bordi dei turni */
-    --colore-sfondo: #002734;         /* Grigio chiaro - Lo sfondo generale dell'app */
+    --colore-sfondo: #ffffff;         /* Grigio chiaro - Lo sfondo generale dell'app */
     --colore-card: #ffffff;           /* Bianco - Lo sfondo delle schede dei turni */
     --colore-testo-header: #ffffff;  /* Bianco - Il testo nell'header */
 }
