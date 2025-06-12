@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-g">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Volontari</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+
+    <header class="app-header">
+        <img src="logo.png" alt="Logo Evento" class="logo"> <h1>I Tuoi Turni</h1>
+    </header>
+
+    <main class="container">
+        <div id="login-screen" class="login-container">
+            <h2>Accesso Volontari</h2>
+            <input type="email" id="email-input" placeholder="Inserisci la tua email">
+            <button id="login-button">Accedi</button>
+            <p id="error-message" class="error-message"></p>
+        </div>
+
+        <div id="main-app" class="hidden">
+            <div id="user-profile" class="profile-header">
+                </div>
+            
+            <div id="turni-list">
+                </div>
+        </div>
+
+        <div id="loading-spinner" class="loading-spinner hidden"></div>
+
+    </main>
+    
+    <script src="script.js"></script>
+</body>
+</html>
