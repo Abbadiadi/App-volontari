@@ -103,6 +103,21 @@ function mostraApp(data) {
     });
 }
 
+// --- NUOVA FUNZIONALITÀ TASTO INVIO ---
+
+// Aggiunge un "ascoltatore" di eventi sul campo dell'email
+emailInput.addEventListener('keyup', function(event) {
+    // Controlla se il tasto che l'utente ha rilasciato è "Enter"
+    if (event.key === 'Enter') {
+        // Annulla l'azione di default del tasto Invio (es. ricaricare la pagina)
+        event.preventDefault();
+        // Simula un click sul pulsante di login, eseguendo la stessa logica
+        loginButton.click();
+    }
+});
+
+// --- FINE NUOVA FUNZIONALITÀ ---
+
 // Controlla se l'utente era già loggato all'avvio dell'app
 document.addEventListener('DOMContentLoaded', () => {
     const savedEmail = localStorage.getItem('userEmail');
