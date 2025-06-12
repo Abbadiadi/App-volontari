@@ -1,52 +1,81 @@
-/* --- PASSO 1: Importazione del nuovo Font --- */
+/* =================================================================
+   APP VOLONTARI - FOGLIO DI STILE PRINCIPALE
+   ================================================================= */
+
+/* ----------------------------------
+   1. Importazioni e Variabili Globali
+   ---------------------------------- */
+
+/* Import del font da Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
 
-/* Stile base per l'app con sfondo */
+/* Variabili dei colori ("Pannello di controllo" grafico) */
+:root {
+    --colore-principale: #002734;
+    --colore-pulsante: #cda434;
+    --colore-pulsante-hover: #e6c56d;
+    --colore-sfondo: #f4f6f8;
+    --colore-card: #ffffff;
+    --colore-testo-header: #ffffff;
+    --colore-grigio-testo: #6c757d;
+    --colore-bordo-default: #ccc;
+    --colore-errore: #d9534f;
+}
+
+/* ----------------------------------
+   2. Stili Generali e Animazioni
+   ---------------------------------- */
+
+/* Stile base per tutto il corpo della pagina */
 body {
     font-family: 'Quicksand', sans-serif;
     margin: 0;
-    /* --- NUOVE REGOLE PER LO SFONDO --- */
-    background-image: linear-gradient(rgba(244, 246, 248, 0.9), rgba(244, 246, 248, 0.9)), url('sfondo.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    /* ----------------------------------- */
+    background-color: var(--colore-sfondo);
     color: #333;
 }
 
-/* --- SEZIONE PERSONALIZZAZIONE --- */
-:root {
-    --colore-principale: #002734;      /* NUOVO COLORE HEADER! (Blu Abbadiadi) */
-    --colore-pulsante: #cda434;        /* NUOVO COLORE PULSANTE! (Oro Abbadiadi) */
-    --colore-secondario: #6f42c1;     /* Viola - Usato per i bordi dei turni */
-    --colore-sfondo: #ffffff;         /* Grigio chiaro - Lo sfondo generale dell'app */
-    --colore-card: #ffffff;           /* Bianco - Lo sfondo delle schede dei turni */
-    --colore-testo-header: #ffffff;  /* Bianco - Il testo nell'header */
+/* Definizione dell'animazione di ingresso */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-/* ------------------------------------ */
+
+/* ----------------------------------
+   3. Layout Principale (Header e Container)
+   ---------------------------------- */
 
 .app-header {
     background-color: var(--colore-principale);
     color: var(--colore-testo-header);
-    padding: 20px; /* Aumentiamo un po' lo spazio interno */
+    padding: 20px;
     text-align: center;
     display: flex;
-    flex-direction: column; /* <-- QUESTA È LA MODIFICA CHIAVE: mette gli elementi in colonna */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    animation: fadeInUp 0.6s ease-out both;
 }
 
 .logo {
-    height: 110px; /* <-- Aumentata la dimensione come richiesto */
-    margin-bottom: 6px; /* <-- Aggiunto spazio SOTTO il logo (invece che a destra) */
+    height: 110px;
+    margin-bottom: 6px;
 }
 
 .container {
     padding: 20px;
 }
 
-/* --- Stili MODIFICATI per il Login --- */
+/* ----------------------------------
+   4. Schermata di Login
+   ---------------------------------- */
+
 .login-container {
     text-align: center;
     margin-top: 50px;
@@ -54,22 +83,49 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+
+.login-card {
+    background-color: var(--colore-card);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid var(--colore-pulsante);
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.login-container h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.login-subtitle {
+    font-size: 15px;
+    color: var(--colore-grigio-testo);
+    margin-top: -15px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
 #email-input {
     width: 100%;
-    padding: 15px 20px; /* Aumentato padding per un look migliore */
+    padding: 15px 20px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 50px; /* Bordo super arrotondato per effetto "pillola" */
+    border: 1px solid var(--colore-bordo-default);
+    border-radius: 50px;
     font-size: 16px;
-    box-sizing: border-box; /* Assicura che il padding non allarghi il box */
-    font-family: 'Quicksand', sans-serif; /* Applica il font anche qui */
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
 }
+
+#email-input:focus {
+    border-color: var(--colore-principale);
+    box-shadow: 0 0 8px rgba(0, 39, 52, 0.2);
+    outline: none;
+}
+
 #login-button {
-    /* Rimuovi la riga 'background-color: var(--colore-pulsante);' */
-    /* e sostituiscila con questa: */
-    background-image: linear-gradient(to top, #cda434, #e6c56d);
-    
-    /* tutte le altre proprietà (color, padding, border, etc.) restano uguali */
+    background-image: linear-gradient(to top, var(--colore-pulsante), var(--colore-pulsante-hover));
     color: white;
     padding: 15px 30px;
     border: none;
@@ -82,41 +138,17 @@ body {
 }
 
 #login-button:hover {
-    transform: scale(1.05); /* Effetto di ingrandimento al passaggio del mouse */
+    transform: scale(1.05);
 }
 
 .error-message {
-    color: #d9534f;
+    color: var(--colore-errore);
     margin-top: 15px;
 }
-/* --- Fine Modifiche Login --- */
 
-
-/* Stili per la scheda del turno */
-.turno-card {
-    background-color: var(--colore-card);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-.turno-card h3 {
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-.turno-orario {
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-bottom: 10px;
-}
-.turno-luogo {
-    font-style: italic;
-    color: #555;
-    margin-bottom: 10px;
-}
-.turno-descrizione {
-    color: #333;
-}
+/* ----------------------------------
+   5. Schermata Principale App (Post-Login)
+   ---------------------------------- */
 
 .profile-header {
     text-align: center;
@@ -124,105 +156,58 @@ body {
     font-size: 1.2em;
 }
 
-/* Utilità */
+.turno-card {
+    background-color: var(--colore-card);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-left: 5px solid var(--colore-grigio-testo); /* Colore di default */
+}
+
+.turno-card h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.turno-orario {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.turno-luogo {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.turno-descrizione {
+    color: #333;
+}
+
+/* Colori specifici per categoria turno */
+.turno-card.categoria-accoglienza { border-left-color: #17a2b8; }
+.turno-card.categoria-sport { border-left-color: #fd7e14; }
+.turno-card.categoria-cerimonia { border-left-color: #ffc107; }
+.turno-card.categoria-maratonina { border-left-color: #28a745; }
+.turno-card.categoria-staffette { border-left-color: #dc3545; }
+
+
+/* ----------------------------------
+   6. Classi di Utilità
+   ---------------------------------- */
+
 .hidden {
     display: none !important;
 }
 
-/* Spinner di caricamento */
 .loading-spinner {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid var(--colore-principale);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-  margin: 50px auto;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-
-/* --- Stili Categorie Turni --- */
-/* Impostiamo un colore di default per il bordo */
-.turno-card {
-    border-left: 5px solid #6c757d; /* Grigio di default */
-}
-/* E ora definiamo un colore specifico per ogni categoria */
-.turno-card.categoria-accoglienza {
-    border-left-color: #17a2b8; /* Ciano */
-}
-.turno-card.categoria-sport {
-    border-left-color: #fd7e14; /* Arancione */
-}
-.turno-card.categoria-cerimonia {
-    border-left-color: #ffc107; /* Giallo */
-}
-.turno-card.categoria-maratonina {
-    border-left-color: #28a745; /* Verde */
-}
-.turno-card.categoria-staffette {
-    border-left-color: #dc3545; /* Rosso */
-}
-
-/* --- MIGLIORAMENTI VISIVI LOGIN --- */
-
-/* Rende il titolo "Accesso volontari" più grande */
-.login-container h2 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 30px;
-}
-
-/* Aggiunge un effetto visivo quando si clicca sull'input dell'email */
-#email-input:focus {
-  border-color: var(--colore-principale); /* Il bordo diventa blu */
-  box-shadow: 0 0 8px rgba(0, 9, 191, 0.2); /* Aggiunge un'ombra luminosa */
-  outline: none; /* Rimuove il bordo standard del browser */
-}
-
-/* Stile per il nuovo box di login */
-.login-card {
-  background-color: var(--colore-card); /* Sfondo bianco */
-  padding: 40px; /* Più spazio all'interno */
-  border-radius: 30px; /* Angoli più arrotondati */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Ombra più pronunciata */
-  border-top: 5px solid var(--colore-pulsante); /* Bordo decorativo superiore color oro */
-}
-
-/* --- IDEA 1: ANIMAZIONE DI INGRESSO --- */
-
-/* Definiamo l'animazione: si chiamerà "fadeInUp" */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Applichiamo l'animazione ai nostri elementi */
-.app-header {
-  /* ...tutte le altre regole restano uguali... */
-  animation: fadeInUp 0.6s ease-out both;
-}
-
-.login-card {
-  /* ...tutte le altre regole restano uguali... */
-  /* Diamo un leggero ritardo al box per un effetto più bello */
-  animation: fadeInUp 0.6s ease-out 0.2s both;
-}
-
-/* --- IDEA 2: STILE PER IL SOTTOTITOLO --- */
-.login-subtitle {
-  font-size: 15px;
-  color: #6c757d; /* Un grigio morbido */
-  margin-top: -15px; /* Lo avvicina al titolo */
-  margin-bottom: 30px; /* Dà più spazio prima del campo email */
-  line-height: 1.5; /* Aumenta la spaziatura tra le righe se il testo va a capo */
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--colore-principale);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 50px auto;
 }
