@@ -1,7 +1,7 @@
 // Questo è il codice JavaScript che viene eseguito nel browser dell'utente
 
 // IMPORTANTE: Incolla qui l'URL che otterrai dopo aver fatto il "Deploy" del Google Apps Script
-const SCRIPT_URL = "https://abbadiadi.github.io/App-volontari/";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhyV4-kCxvkWEKJos_AUHYmEXoALsj5jKF2PEyaa4FPt8ZpBif8GitU7_mXyoscQvzfA/exec";
 
 // Riferimenti agli elementi HTML
 const loginScreen = document.getElementById('login-screen');
