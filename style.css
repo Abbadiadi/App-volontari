@@ -38,8 +38,8 @@ body {
 }
 
 .logo {
-    height: 60px; /* <-- Aumentata la dimensione come richiesto */
-    margin-bottom: 10px; /* <-- Aggiunto spazio SOTTO il logo (invece che a destra) */
+    height: 110px; /* <-- Aumentata la dimensione come richiesto */
+    margin-bottom: 6px; /* <-- Aggiunto spazio SOTTO il logo (invece che a destra) */
 }
 
 .container {
