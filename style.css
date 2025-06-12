@@ -157,3 +157,19 @@ body {
 .turno-card.categoria-staffette {
     border-left-color: #dc3545; /* Rosso */
 }
+
+/* --- MIGLIORAMENTI VISIVI LOGIN --- */
+
+/* Rende il titolo "Accesso volontari" più grande */
+.login-container h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* Aggiunge un effetto visivo quando si clicca sull'input dell'email */
+#email-input:focus {
+  border-color: var(--colore-principale); /* Il bordo diventa blu */
+  box-shadow: 0 0 8px rgba(0, 9, 191, 0.2); /* Aggiunge un'ombra luminosa */
+  outline: none; /* Rimuove il bordo standard del browser */
+}
