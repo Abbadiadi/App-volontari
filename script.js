@@ -1,6 +1,6 @@
 // VERSIONE 3.0: Interfaccia a schede e turni dinamici
 
-const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT"; // IMPORTANTE!
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6rjmrEKmvXj5LzYV5cF1mOmLm0r-DClCs4eHddlCeup3CfXHrnqSQg8gQrEMQ07_xpA/exec"; // IMPORTANTE!
 
 // Riferimenti agli elementi HTML
 const loginScreen = document.getElementById('login-screen');
