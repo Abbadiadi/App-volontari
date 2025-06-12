@@ -1,6 +1,6 @@
-// VERSIONE 2: CON GESTIONE DELLE SCHERMATE
+// VERSIONE 2.1: CON FUNZIONE DI LOGOUT
 
-const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7zpWPsDEIwoZwoh5A7lokHdId3gAIubyGMlau1NCWW3QSgqplN_skakU6EPRprY8ccA/exec"; // ASSICURATI CHE QUI CI SIA IL TUO URL CORRETTO!
 
 // Riferimenti agli elementi HTML
 const loginScreen = document.getElementById('login-screen');
@@ -10,10 +10,11 @@ const loginButton = document.getElementById('login-button');
 const errorMessage = document.getElementById('error-message');
 const loadingSpinner = document.getElementById('loading-spinner');
 
-// Riferimenti ai nuovi elementi dell'app principale
+// Riferimenti agli elementi dell'app principale
 const mainTitle = document.getElementById('main-title');
 const turniList = document.getElementById('turni-list');
 const allViews = document.querySelectorAll('.view');
+const logoutButton = document.getElementById('logout-button'); // NUOVO RIFERIMENTO
 
 // Riferimenti ai pulsanti di navigazione
 const navButtons = document.querySelectorAll('.nav-button');
@@ -22,22 +23,32 @@ const navProgramma = document.getElementById('nav-programma');
 const navChat = document.getElementById('nav-chat');
 const navPlanimetria = document.getElementById('nav-planimetria');
 
-// === LOGICA CAMBIO SCHERMATA (NUOVA) ===
+
+// === NUOVA FUNZIONE DI LOGOUT ===
+function logout() {
+    // 1. Rimuove l'email salvata dalla memoria del browser
+    localStorage.removeItem('userEmail');
+    // 2. Ricarica la pagina. Questo riporterà automaticamente alla schermata di login
+    // perché non troverà più un'email salvata. È il modo più pulito e sicuro.
+    location.reload();
+}
+
+// Aggiunge l'evento di click al pulsante di logout
+logoutButton.addEventListener('click', logout);
+// ================================
+
+
+// === LOGICA CAMBIO SCHERMATA (invariata) ===
 function showView(viewId) {
-    // Nasconde tutte le viste
     allViews.forEach(view => {
         view.classList.add('hidden');
         view.classList.remove('active-view');
     });
-
-    // Mostra solo la vista richiesta
     const targetView = document.getElementById(viewId);
     if (targetView) {
         targetView.classList.remove('hidden');
         targetView.classList.add('active-view');
     }
-
-    // Aggiorna lo stato "attivo" dei pulsanti di navigazione
     navButtons.forEach(button => {
         button.classList.remove('active');
     });
@@ -45,13 +56,9 @@ function showView(viewId) {
     if (activeButton) {
         activeButton.classList.add('active');
     }
-
-    // Aggiorna il titolo nell'header
-    // (Prende il testo dal pulsante di navigazione corrispondente)
     mainTitle.textContent = activeButton.querySelector('span').textContent;
 }
 
-// Aggiunge gli eventi di click ai pulsanti di navigazione
 navTurni.addEventListener('click', () => showView('view-turni'));
 navProgramma.addEventListener('click', () => showView('view-programma'));
 navChat.addEventListener('click', () => showView('view-chat'));
@@ -59,7 +66,7 @@ navPlanimetria.addEventListener('click', () => showView('view-planimetria'));
 // =======================================
 
 
-// === LOGICA DI LOGIN E CARICAMENTO DATI (invariata ma con modifiche finali) ===
+// === LOGICA DI LOGIN E CARICAMENTO DATI (invariata) ===
 async function caricaDati(email) {
     loadingSpinner.classList.remove('hidden');
     loginScreen.classList.add('hidden');
@@ -70,30 +77,25 @@ async function caricaDati(email) {
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
-        // Nasconde la schermata di login e mostra l'app
         loginScreen.classList.add('hidden');
         mainApp.classList.remove('hidden');
         
-        // Esegue la funzione per mostrare i dati
-        mostraTurni(data); // Modificato da mostraApp a mostraTurni
+        mostraTurni(data);
 
-        // *** INTEGRAZIONE RUOLI ADMIN/RESPONSABILE (da sviluppare) ***
         if (data.user.ruolo === 'Admin' || data.user.ruolo === 'Responsabile') {
             console.log("Utente con privilegi elevati. Qui abiliteremo le funzioni speciali.");
-            // Esempio: potremmo mostrare un pulsante admin
         }
         
     } catch (error) {
         console.error("Errore nel caricamento dati:", error);
-        loginScreen.classList.remove('hidden');
-        mainApp.classList.add('hidden');
-        // Qui mostreremo l'errore nel login-card
+        // Se il caricamento fallisce (es. utente rimosso), esegui il logout per pulire
+        logout();
     } finally {
         loadingSpinner.classList.add('hidden');
     }
 }
 
-// Funzione specifica per mostrare solo i turni (ex mostraApp)
+// Funzione specifica per mostrare solo i turni (invariata)
 function mostraTurni(data) {
     turniList.innerHTML = '';
     if (data.turni.length === 0) {
@@ -118,7 +120,7 @@ function mostraTurni(data) {
     });
 }
 
-// --- Eventi di Login e Caricamento Iniziale (leggermente modificati) ---
+// --- Eventi di Login e Caricamento Iniziale (invariati) ---
 loginButton.addEventListener('click', () => {
     const email = emailInput.value.trim();
     if (email) {
@@ -137,8 +139,8 @@ emailInput.addEventListener('keyup', function(event) {
 document.addEventListener('DOMContentLoaded', () => {
     const savedEmail = localStorage.getItem('userEmail');
     if (savedEmail) {
-        mainApp.classList.remove('hidden');
-        loginScreen.classList.add('hidden');
         caricaDati(savedEmail);
+    } else {
+        loginScreen.classList.remove('hidden');
     }
 });
