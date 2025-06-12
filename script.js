@@ -1,7 +1,7 @@
 // Questo è il codice JavaScript che viene eseguito nel browser dell'utente
 
 // IMPORTANTE: Incolla qui l'URL che otterrai dopo aver fatto il "Deploy" del Google Apps Script
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhyV4-kCxvkWEKJos_AUHYmEXoALsj5jKF2PEyaa4FPt8ZpBif8GitU7_mXyoscQvzfA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7zpWPsDEIwoZwoh5A7lokHdId3gAIubyGMlau1NCWW3QSgqplN_skakU6EPRprY8ccA/exec";
 
 // Riferimenti agli elementi HTML
 const loginScreen = document.getElementById('login-screen');
