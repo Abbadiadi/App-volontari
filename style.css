@@ -1,12 +1,16 @@
 /* --- PASSO 1: Importazione del nuovo Font --- */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
 
-/* Stile base per l'app */
+/* Stile base per l'app con sfondo */
 body {
-    /* Applichiamo Quicksand come font principale */
     font-family: 'Quicksand', sans-serif;
     margin: 0;
-    background-color: var(--colore-sfondo);
+    /* --- NUOVE REGOLE PER LO SFONDO --- */
+    background-image: linear-gradient(rgba(244, 246, 248, 0.9), rgba(244, 246, 248, 0.9)), url('sfondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* ----------------------------------- */
     color: #333;
 }
 
@@ -172,4 +176,13 @@ body {
   border-color: var(--colore-principale); /* Il bordo diventa blu */
   box-shadow: 0 0 8px rgba(0, 9, 191, 0.2); /* Aggiunge un'ombra luminosa */
   outline: none; /* Rimuove il bordo standard del browser */
+}
+
+/* Stile per il nuovo box di login */
+.login-card {
+  background-color: var(--colore-card); /* Sfondo bianco */
+  padding: 40px; /* Più spazio all'interno */
+  border-radius: 16px; /* Angoli più arrotondati */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Ombra più pronunciata */
+  border-top: 5px solid var(--colore-pulsante); /* Bordo decorativo superiore color oro */
 }
