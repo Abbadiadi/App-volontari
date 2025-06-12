@@ -65,16 +65,20 @@ body {
     font-family: 'Quicksand', sans-serif; /* Applica il font anche qui */
 }
 #login-button {
-    background-color: var(--colore-pulsante);
+    /* Rimuovi la riga 'background-color: var(--colore-pulsante);' */
+    /* e sostituiscila con questa: */
+    background-image: linear-gradient(to top, #cda434, #e6c56d);
+    
+    /* tutte le altre proprietà (color, padding, border, etc.) restano uguali */
     color: white;
     padding: 15px 30px;
     border: none;
-    border-radius: 50px; /* Bordo super arrotondato per effetto "pillola" */
+    border-radius: 50px;
     font-size: 18px;
-    font-weight: 700; /* Testo più grassetto */
+    font-weight: 700;
     cursor: pointer;
-    font-family: 'Quicksand', sans-serif; /* Applica il font anche qui */
-    transition: transform 0.2s ease-in-out; /* Aggiunge una piccola animazione */
+    font-family: 'Quicksand', sans-serif;
+    transition: transform 0.2s ease-in-out;
 }
 
 #login-button:hover {
@@ -186,4 +190,39 @@ body {
   border-radius: 30px; /* Angoli più arrotondati */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Ombra più pronunciata */
   border-top: 5px solid var(--colore-pulsante); /* Bordo decorativo superiore color oro */
+}
+
+/* --- IDEA 1: ANIMAZIONE DI INGRESSO --- */
+
+/* Definiamo l'animazione: si chiamerà "fadeInUp" */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Applichiamo l'animazione ai nostri elementi */
+.app-header {
+  /* ...tutte le altre regole restano uguali... */
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.login-card {
+  /* ...tutte le altre regole restano uguali... */
+  /* Diamo un leggero ritardo al box per un effetto più bello */
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+/* --- IDEA 2: STILE PER IL SOTTOTITOLO --- */
+.login-subtitle {
+  font-size: 15px;
+  color: #6c757d; /* Un grigio morbido */
+  margin-top: -15px; /* Lo avvicina al titolo */
+  margin-bottom: 30px; /* Dà più spazio prima del campo email */
+  line-height: 1.5; /* Aumenta la spaziatura tra le righe se il testo va a capo */
 }
