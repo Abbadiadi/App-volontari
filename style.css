@@ -1,17 +1,20 @@
 /* =================================================================
-   APP VOLONTARI - FOGLIO DI STILE PRINCIPALE (v2)
+   APP VOLONTARI - FOGLIO DI STILE PRINCIPALE
    ================================================================= */
 
 /* ----------------------------------
    1. Importazioni e Variabili Globali
    ---------------------------------- */
+
+/* Import del font da Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
 
+/* Variabili dei colori ("Pannello di controllo" grafico) */
 :root {
     --colore-principale: #002734;
     --colore-pulsante: #cda434;
     --colore-pulsante-hover: #e6c56d;
-    --colore-sfondo: #f4f6f8;
+    --colore-sfondo-pagina: #f4f6f8;
     --colore-card: #ffffff;
     --colore-testo-header: #ffffff;
     --colore-grigio-testo: #6c757d;
@@ -22,40 +25,52 @@
 /* ----------------------------------
    2. Stili Generali e Animazioni
    ---------------------------------- */
+
+/* Stile base per tutto il corpo della pagina */
 body {
     font-family: 'Quicksand', sans-serif;
     margin: 0;
-    background-color: var(--colore-sfondo);
+    background-color: var(--colore-sfondo-pagina);
+    /* Regole per l'immagine di sfondo */
+    background-image: linear-gradient(rgba(244, 246, 248, 0.9), rgba(244, 246, 248, 0.9)), url('sfondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: #333;
-    padding-bottom: 100px; /* Spazio per la barra di navigazione inferiore */
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
 }
 
 /* ----------------------------------
-   3. Schermata di Login
+   3. Layout Principale (Header)
    ---------------------------------- */
-.login-container {
-    text-align: center;
-}
 
-.login-container .app-header { /* Header specifico per il login */
+.app-header {
+    background-color: var(--colore-principale);
+    color: var(--colore-testo-header);
     padding: 20px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    background-color: var(--colore-principale);
-    color: var(--colore-testo-header);
 }
 
-.login-container .logo {
+.logo {
     height: 110px;
     margin-bottom: 6px;
+}
+
+/* ----------------------------------
+   4. Schermata di Login
+   ---------------------------------- */
+
+.login-container {
+    padding: 20px;
+    text-align: center;
+    margin-top: 50px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .login-card {
@@ -64,171 +79,60 @@ body {
     border-radius: 30px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     border-top: 5px solid var(--colore-pulsante);
-    margin: 50px 20px;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-/* ... altri stili del login rimangono uguali ... */
-#email-input, #login-button, .login-subtitle, .error-message { /* stili invariati */ }
+.login-container h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
 
+.login-subtitle {
+    font-size: 15px;
+    color: var(--colore-grigio-testo);
+    margin-top: -15px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
 
-/* =================================================================
-   SEZIONE APP PRINCIPALE (POST-LOGIN)
-   ================================================================= */
-
-/* ----------------------------------
-   4. Layout Post-Login (Header, Viste)
-   ---------------------------------- */
-
-.app-header-main {
-    background-color: var(--colore-principale);
-    color: var(--colore-testo-header);
+#email-input {
+    width: 100%;
     padding: 15px 20px;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* NUOVO: Stile per la navigazione in alto a destra */
-.top-right-nav {
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%);
-    display: flex;
-    gap: 10px;
-}
-
-#logout-button {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; /* Cerchio perfetto */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-#logout-button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
-#logout-button svg {
-    width: 20px;
-    height: 20px;
-}
-
-.app-header-main h1 {
-    margin: 0;
-    font-size: 22px;
-}
-
-.container {
-    padding: 20px;
-}
-
-.view {
-    /* Stile base per ogni schermata */
-}
-
-/* ----------------------------------
-   5. Barra di Navigazione Inferiore
-   ---------------------------------- */
-
-.bottom-nav {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--colore-bordo-default);
     border-radius: 50px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
-    z-index: 100;
-}
-
-.nav-button {
-    background-color: transparent;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 5px 10px;
-    border-radius: 15px;
-    color: var(--colore-grigio-testo);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
-
-.nav-button svg {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 2px;
-}
-
-.nav-button span {
-    font-size: 12px;
+    font-size: 16px;
+    box-sizing: border-box;
     font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
+    text-align: center;
 }
 
-.nav-button:hover {
-    background-color: #e9ecef;
+#email-input:focus {
+    border-color: var(--colore-principale);
+    box-shadow: 0 0 8px rgba(0, 39, 52, 0.2);
+    outline: none;
 }
 
-.nav-button.active {
-    color: var(--colore-principale);
-}
-
-/* ----------------------------------
-   6. Stili delle Schermate Specifiche
-   ---------------------------------- */
-
-/* Schermata Chat */
-.whatsapp-button {
-    display: block;
-    background-color: #25D366;
+#login-button {
+    background-image: linear-gradient(to top, var(--colore-pulsante), var(--colore-pulsante-hover));
     color: white;
-    padding: 15px;
-    text-align: center;
+    padding: 15px 30px;
+    border: none;
     border-radius: 50px;
-    text-decoration: none;
+    font-size: 18px;
     font-weight: 700;
-    margin-top: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    transition: transform 0.2s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.chat-info {
-    text-align: center;
-    color: var(--colore-grigio-testo);
+#login-button:hover {
+    transform: scale(1.05);
+}
+
+.error-message {
+    color: var(--colore-errore);
     margin-top: 15px;
 }
-
-/* ... stili per turni, profilo etc. rimangono per ora uguali ... */
-.turno-card, .profile-header { /* stili invariati */ }
-
-
-/* ----------------------------------
-   7. Classi di Utilità
-   ---------------------------------- */
-
-.hidden {
-    display: none !important;
-}
-
-.active-view {
-    display: block !important;
-}
-
-.loading-spinner { /* stile invariato */ }
