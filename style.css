@@ -93,6 +93,39 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* NUOVO: Stile per la navigazione in alto a destra */
+.top-right-nav {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+#logout-button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Cerchio perfetto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#logout-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+#logout-button svg {
+    width: 20px;
+    height: 20px;
+}
+
 .app-header-main h1 {
     margin: 0;
     font-size: 22px;
