@@ -1,8 +1,7 @@
-// VERSIONE COMPLETA CON NAVIGAZIONE
+// VERSIONE 6.0 - STABILE CON NAVIGAZIONE
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxstSxAWfe0TYzoa8OHXqQL6jMNnGkZZl0L83YxhQJzsKDKtuUVQW3B9FHTF0EXTieA7w/exec"; // IMPORTANTE!
+const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DI_DEPLOYMENT"; // IMPORTANTE!
 
-// Riferimenti agli elementi HTML
 const loginScreen = document.getElementById('login-screen');
 const mainApp = document.getElementById('main-app');
 const emailInput = document.getElementById('email-input');
@@ -18,23 +17,20 @@ const adminVolontariList = document.getElementById('admin-volontari-list');
 const adminTurniList = document.getElementById('admin-turni-list');
 
 // === LOGICA DI NAVIGAZIONE ===
-function showView(viewId) {
+function showView(viewIdToShow) {
     allViews.forEach(view => {
         view.classList.add('hidden');
-        view.classList.remove('active');
     });
-    const targetView = document.getElementById(viewId);
+    const targetView = document.getElementById(viewIdToShow);
     if (targetView) {
         targetView.classList.remove('hidden');
-        targetView.classList.add('active');
     }
-
     document.querySelectorAll('.nav-button').forEach(button => {
         button.classList.remove('active');
         const buttonViewName = button.id.split('-')[1];
-        if (`view-${buttonViewName}` === viewId) {
+        if (`view-${buttonViewName}` === viewIdToShow) {
             button.classList.add('active');
-            if(button.querySelector('span')) {
+            if (button.querySelector('span')) {
                 mainTitle.textContent = button.querySelector('span').textContent;
             }
         }
@@ -42,7 +38,10 @@ function showView(viewId) {
 }
 
 // === LOGICA DI AUTENTICAZIONE E DATI ===
-function logout() { localStorage.removeItem('userEmail'); location.reload(); }
+function logout() {
+    localStorage.removeItem('userEmail');
+    location.reload();
+}
 
 async function caricaDati(email) {
     loadingSpinner.classList.remove('hidden');
@@ -64,7 +63,6 @@ async function caricaDati(email) {
             navAdmin.classList.remove('hidden');
             mostraPannelloAdmin(data);
         }
-        
     } catch (error) {
         alert("Si è verificato un errore: " + error.message);
         logout();
@@ -72,36 +70,6 @@ async function caricaDati(email) {
         loadingSpinner.classList.add('hidden');
     }
 }
-
-function mostraTurniPersonali(data) {
-    turniList.innerHTML = '';
-    const turniPersonali = data.turni || [];
-    if (turniPersonali.length === 0) {
-        turniList.innerHTML = '<p style="text-align: center;">Nessun turno personale assegnato.</p>';
-        return;
-    }
-    // ... logica per creare le card...
-}
-
-function mostraPannelloAdmin(data) {
-    adminVolontariList.innerHTML = '';
-    adminTurniList.innerHTML = '';
-    const tuttiIVolontari = data.tuttiIVolontari || [];
-    const tuttiITurni = data.tuttiITurni || [];
-    // ... logica per creare le liste admin...
-}
-
-// === GESTIONE EVENTI ===
-logoutButton.addEventListener('click', logout);
-document.querySelectorAll('.nav-button').forEach(button => {
-    button.addEventListener('click', () => {
-        showView(`view-${button.id.replace('nav-','view-')}`);
-    });
-});
-loginButton.addEventListener('click', () => { /* ... */ });
-emailInput.addEventListener('keyup', e => { /* ... */ });
-document.addEventListener('click', e => { /* ... */ });
-document.addEventListener('DOMContentLoaded', () => { /* ... */ });
 
 // === FUNZIONI PER MOSTRARE I CONTENUTI ===
 function mostraTurniPersonali(data) {
@@ -119,15 +87,13 @@ function mostraTurniPersonali(data) {
         const timeParts = timeStr.split(':');
         return new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]), parseInt(timeParts[0]), parseInt(timeParts[1]));
     };
-
-    turniPersonali.sort((a, b) => {
-        return parseDateTime(a['Data Inizio'], a['Ora Inizio']) - parseDateTime(b['Data Inizio'], b['Ora Inizio']);
-    });
+    
+    const turniOrdinati = [...turniPersonali];
 
     const turniFuturi = [], turniPassati = [];
     let turnoAttuale = null;
 
-    turniPersonali.forEach(turno => {
+    turniOrdinati.forEach(turno => {
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
         if (now >= inizio && now <= fine) turnoAttuale = turno;
@@ -137,20 +103,23 @@ function mostraTurniPersonali(data) {
     
     turniPassati.reverse();
 
-    const turniOrdinati = [
+    const turniFinali = [
         ...(turnoAttuale ? [turnoAttuale] : []),
         ...turniFuturi,
         ...turniPassati
     ];
 
-    turniOrdinati.forEach(turno => {
+    turniFinali.forEach(turno => {
         const card = document.createElement('div');
         card.className = 'turno-card';
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
         if (now >= inizio && now <= fine) card.classList.add('attuale');
         else if (now > fine) card.classList.add('passato');
-        if (turno.Categoria) card.classList.add('categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-'));
+        if (turno.Categoria) {
+            const categoriaClasse = 'categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-');
+            card.classList.add(categoriaClasse);
+        }
         
         const orario = `${turno['Ora Inizio']} - ${turno['Ora Fine']}`;
         card.innerHTML = `<h3>${turno['Nome Turno']}</h3><p class="turno-orario">${orario}</p><p class="turno-luogo">📍 ${turno.Luogo}</p><p class="turno-descrizione">${turno.Descrizione}</p>`;
@@ -184,7 +153,8 @@ logoutButton.addEventListener('click', logout);
 
 document.querySelectorAll('.nav-button').forEach(button => {
     button.addEventListener('click', () => {
-        showView(`view-${button.id.replace('nav-','')}`);
+        const viewName = button.id.split('-')[1];
+        showView(`view-${viewName}`);
     });
 });
 
