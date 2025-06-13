@@ -1,6 +1,6 @@
 // VERSIONE 5.0 - Fornita in 3 parti per evitare errori di troncamento
 
-const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT"; // IMPORTANTE!
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxmMpsXfe8_arpX-ZBnU_nPQc7EfNSPeTyWi3SVejl6dGZSR8MAeNQVnvtmNkJ--xGcQ/exec"; // IMPORTANTE!
 
 // Riferimenti a tutti gli elementi HTML usati nello script
 const loginScreen = document.getElementById('login-screen');
