@@ -33,10 +33,62 @@
             </div>
         </header>
 
-        <main class="container">
-            <div id="turni-list">
+        <main id="app-content" class="container">
+            <div id="view-turni" class="view">
+                <div id="turni-list"></div>
+            </div>
+
+            <div id="view-programma" class="view hidden">
+                <h2>Programma della Giornata</h2>
+                <p>Questa sezione mostrerà la timeline completa degli eventi.</p>
+            </div>
+
+            <div id="view-chat" class="view hidden">
+                <h2>Chat</h2>
+                <a href="https://chat.whatsapp.com/IL_TUO_LINK_GRUPPO" target="_blank" class="whatsapp-button">Apri Chat Volontari su WhatsApp</a>
+                <p class="chat-info">Usa la chat di gruppo per comunicazioni veloci.</p>
+            </div>
+
+            <div id="view-planimetria" class="view hidden">
+                <h2>Planimetria</h2>
+                <p>Questa sezione mostrerà la mappa interattiva dell'evento.</p>
+            </div>
+
+             <div id="view-admin" class="view hidden">
+                <h2>Pannello di Controllo</h2>
+                <div class="admin-section">
+                    <h3>Tutti i Volontari</h3>
+                    <div id="admin-volontari-list" class="admin-list"></div>
                 </div>
+                <div class="admin-section">
+                    <h3>Tutti i Turni</h3>
+                    <div id="admin-turni-list" class="admin-list"></div>
+                </div>
+            </div>
         </main>
+        
+        <nav class="bottom-nav">
+            <button id="nav-turni" class="nav-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Turni</span>
+            </button>
+            <button id="nav-programma" class="nav-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                <span>Programma</span>
+            </button>
+            <button id="nav-chat" class="nav-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span>Chat</span>
+            </button>
+            <button id="nav-planimetria" class="nav-button">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"></path><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                <span>Mappa</span>
+            </button>
+            <button id="nav-admin" class="nav-button hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Admin</span>
+            </button>
+        </nav>
     </div>
 
     <div id="loading-spinner" class="loading-spinner hidden"></div>
