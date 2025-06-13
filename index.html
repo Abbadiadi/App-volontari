@@ -5,132 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Volontari</title>
     
+    <!-- INIZIO CSS -->
     <style>
-        /* =================================================================
-           APP VOLONTARI - FOGLIO DI STILE COMPLETO
-           ================================================================= */
-
         /* 1. Importazioni e Variabili Globali */
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Lato:wght@400;700&display=swap');
+        
         :root {
-            --colore-principale: #002734;
-            --colore-pulsante: #cda434;
-            --colore-sfondo-pagina: #f4f6f8;
-            --colore-card: #ffffff;
-            --colore-testo-header: #ffffff;
-            --colore-grigio-testo: #6c757d;
-            --colore-bordo-default: #ccc;
-            --colore-errore: #d9534f;
+            /* Tema Chiaro (Light Mode) */
+            --colore-principale: #002734; --colore-accento: #17a2b8; --colore-pulsante: #cda434;
+            --colore-sfondo-pagina: #f4f6f8; --colore-card: #ffffff; --colore-testo: #333;
+            --colore-testo-header: #ffffff; --colore-grigio-testo: #6c757d; --colore-bordo-default: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.1); --font-primario: 'Quicksand', sans-serif; --font-secondario: 'Lato', sans-serif;
+            --colore-errore: #c0392b;
         }
-
+        body.dark-mode {
+            /* Tema Scuro (Dark Mode) */
+            --colore-principale: #0a3d4e; --colore-accento: #17a2b8; --colore-pulsante: #cda434;
+            --colore-sfondo-pagina: #001f2b; --colore-card: #003344; --colore-testo: #eaf4f8;
+            --colore-testo-header: #ffffff; --colore-grigio-testo: #9fbdc9; --colore-bordo-default: #1a4c5e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+        
         /* 2. Stili Generali */
-        body {
-            font-family: 'Quicksand', sans-serif;
-            margin: 0;
-            background-color: var(--colore-sfondo-pagina);
-            color: #333;
-            padding-bottom: 100px;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        body { font-family: var(--font-secondario); margin: 0; background-color: var(--colore-sfondo-pagina); color: var(--colore-testo); transition: background-color 0.3s, color 0.3s; padding-bottom: 120px; }
+        h1, h2, h3, h4, .nav-button span, #login-button { font-family: var(--font-primario); }
+        .hidden { display: none !important; }
 
         /* 3. Schermata di Login */
-        #login-screen .app-header {
-            background-color: var(--colore-principale); color: var(--colore-testo-header);
-            padding: 20px; text-align: center; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        #login-screen .logo { height: 110px; margin-bottom: 6px; }
-        .login-container { padding: 20px; margin-top: 50px; max-width: 400px; margin: 50px auto 0 auto; }
-        .login-card {
-            background-color: var(--colore-card); padding: 40px; border-radius: 30px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); border-top: 5px solid var(--colore-pulsante);
-        }
-        .login-card h2 { font-size: 28px; font-weight: 700; }
-        #email-input {
-            width: 100%; padding: 15px 20px; margin-bottom: 20px; border: 1px solid var(--colore-bordo-default);
-            border-radius: 50px; font-size: 16px; box-sizing: border-box; text-align: center;
-        }
-        #login-button {
-            background-color: var(--colore-pulsante); color: white; padding: 15px 30px; border: none;
-            border-radius: 50px; font-size: 18px; font-weight: 700; cursor: pointer;
-            width: 100%; box-sizing: border-box;
-        }
-        .error-message { color: var(--colore-errore); margin-top: 15px; }
+        #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+        .login-card { background-color: var(--colore-card); color: var(--colore-testo); padding: 30px 40px; border-radius: 24px; box-shadow: 0 10px 40px var(--shadow-color); text-align: center; width: 100%; max-width: 400px; }
+        .login-card .login-logo { height: 90px; margin-bottom: 10px; }
+        .login-card h1 { font-size: 26px; margin: 0 0 5px 0; color: var(--colore-testo); }
+        .login-card h2 { font-size: 16px; font-weight: 500; color: var(--colore-grigio-testo); margin: 0 0 30px 0; }
+        #email-input { width: 100%; padding: 15px 20px; margin-bottom: 20px; border: 1px solid var(--colore-bordo-default); border-radius: 50px; font-size: 16px; box-sizing: border-box; text-align: center; background-color: var(--colore-sfondo-pagina); color: var(--colore-testo); }
+        #login-button { background-color: var(--colore-pulsante); color: #111; padding: 15px 30px; border: none; border-radius: 50px; font-size: 18px; font-weight: 700; cursor: pointer; width: 100%; box-sizing: border-box; }
+        .error-message { color: var(--colore-errore); margin-top: 15px; line-height: 1.4; font-size: 14px; display: none; }
+        .error-message a { color: var(--colore-errore); font-weight: bold; }
 
-        /* 4. App Principale (Post-Login) */
-        .app-header-main {
-            background-color: var(--colore-principale); color: var(--colore-testo-header); padding: 15px 20px;
-            text-align: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex; align-items: center; justify-content: center;
-        }
-        .app-header-main h1 { margin: 0; font-size: 22px; flex-grow: 1; cursor: pointer; }
+        /* 4. App Principale e Navigazione */
+        .app-header-main { background-color: var(--colore-principale); color: var(--colore-testo-header); padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: center; }
+        .app-header-main h1 { margin: 0; font-size: 24px; font-weight: 700; flex-grow: 1; }
         .container { padding: 20px; }
         .view { display: none; }
         .view.active { display: block; }
-        .top-right-nav { position: absolute; top: 50%; right: 15px; transform: translateY(-50%); display: flex; align-items: center; gap: 10px; }
-        #logout-button {
-            background: transparent; border: 1px solid rgba(255, 255, 255, 0.5); color: white;
-            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; cursor: pointer; transition: background-color 0.2s ease;
-        }
-        #logout-button:hover { background-color: rgba(255, 255, 255, 0.15); }
-        #logout-button svg { width: 20px; height: 20px; }
-        #admin-panel-button {
-            background-color: var(--colore-pulsante); color: white; border: none;
-            border-radius: 20px; padding: 8px 15px; font-family: 'Quicksand', sans-serif;
-            font-weight: 700; cursor: pointer;
-        }
-        .admin-section { margin-bottom: 30px; }
-        .admin-list .list-item {
-            background-color: var(--colore-card); padding: 15px; border-radius: 8px; margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--colore-principale);
-        }
-        .list-item h4 { margin: 0 0 5px 0; }
-        .list-item p { margin: 0; font-size: 14px; color: var(--colore-grigio-testo); }
-        .turno-card {
-            background-color: var(--colore-card); border-radius: 16px; padding: 20px;
-            margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border-left: 6px solid var(--colore-grigio-testo); cursor: pointer;
-        }
-        .turno-card.passato { opacity: 0.65; filter: grayscale(50%); border-left-color: var(--colore-grigio-testo) !important; }
-        .turno-card.passato h3 { text-decoration: line-through; }
-        .turno-card h3 { margin: 0 0 5px 0; }
-        .turno-orario { font-weight: bold; }
-        .turno-luogo { font-style: italic; color: #555; margin: 10px 0; }
-        .turno-descrizione { display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
-        .turno-card.aperta .turno-descrizione { display: block; }
-        .turno-card.categoria-accoglienza { border-left-color: #17a2b8; }
-        .turno-card.categoria-sport { border-left-color: #fd7e14; }
-        .turno-card.categoria-cerimonia { border-left-color: #ffc107; }
-        .turno-card.attuale { border-color: var(--colore-pulsante) !important; transform: scale(1.02); }
+        .top-right-nav { position: absolute; top: 50%; right: 15px; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; }
+        .icon-button { background: transparent; border: 1px solid rgba(255, 255, 255, 0.3); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; background-color: var(--colore-card); padding: 10px; border-radius: 50px; box-shadow: 0 4px 20px var(--shadow-color); z-index: 100; }
+        .nav-button { background-color: transparent; border: none; display: flex; flex-direction: column; align-items: center; padding: 5px 10px; border-radius: 15px; color: var(--colore-grigio-testo); cursor: pointer; transition: color 0.2s ease-in-out; }
+        .nav-button.active { color: var(--colore-pulsante); }
+        .nav-button svg { width: 24px; height: 24px; margin-bottom: 2px; }
+        .nav-button span { font-size: 12px; font-weight: 700; }
+        
+        /* 5. Card dei Turni */
+        .turno-card { background-color: var(--colore-card); border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 15px var(--shadow-color); transition: all 0.3s ease; overflow: hidden; }
+        .turno-card-header { padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--colore-testo-header); background-color: var(--colore-grigio-testo); }
+        .turno-card-header h3 { margin: 0; font-size: 18px; line-height: 1.2; }
+        .turno-card-header .turno-orario { margin: 4px 0 0 0; font-size: 14px; font-family: var(--font-secondario); font-weight: 400; opacity: 0.9; }
+        .expand-arrow { transition: transform 0.3s ease-in-out; }
+        .turno-card.is-open .expand-arrow { transform: rotate(180deg); }
+        .turno-card-body { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease-in-out; padding: 0 20px; }
+        .turno-card.is-open .turno-card-body { max-height: 500px; opacity: 1; padding: 20px; border-top: 1px solid var(--colore-bordo-default); }
+        .turno-card-body p { margin: 0 0 10px 0; font-family: var(--font-secondario); }
+        .turno-card.categoria-accoglienza .turno-card-header { background-color: var(--colore-accento); }
+        .turno-card.categoria-sport .turno-card-header { background-color: #fd7e14; }
+        .turno-card.categoria-cerimonia .turno-card-header { background-color: #ffc107; }
+        .turno-card.categoria-maratonina .turno-card-header { background-color: #28a745; }
+        .turno-card.categoria-staffette .turno-card-header { background-color: #dc3545; }
+        .turno-card.passato { opacity: 0.6; }
+        .turno-card.passato .turno-card-header h3, .turno-card.passato .turno-orario { text-decoration: line-through; }
 
-        /* 5. Utilità */
-        .hidden { display: none !important; }
-        .loading-spinner {
-            border: 5px solid #f3f3f3; border-top: 5px solid var(--colore-principale);
-            border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 50px auto;
-        }
+        /* 6. Finestre Modali e Pannello Admin */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        .modal-overlay.visible { display: flex; opacity: 1; }
+        .modal-content { background-color: var(--colore-card); color: var(--colore-testo); padding: 20px; border-radius: 16px; width: 90%; max-width: 500px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); position: relative; transform: scale(0.95); transition: transform 0.3s ease-in-out; max-height: 85vh; overflow-y: auto;}
+        .modal-overlay.visible .modal-content { transform: scale(1); }
+        .modal-close-button { position: absolute; top: 5px; right: 15px; background: none; border: none; font-size: 30px; cursor: pointer; color: var(--colore-grigio-testo); }
+        .profilo-card { text-align: center; }
+        .logout-button-profilo { background-color: #c0392b; color: white; padding: 12px 25px; border: none; border-radius: 50px; font-size: 16px; cursor: pointer; margin-top: 30px; }
+        .theme-switch-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 25px 0; padding: 10px; border-top: 1px solid var(--colore-bordo-default); border-bottom: 1px solid var(--colore-bordo-default); }
+        .theme-switch { display: inline-block; height: 34px; position: relative; width: 60px; }
+        .theme-switch input { display: none; }
+        .slider { background-color: var(--colore-grigio-testo); bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 26px; left: 4px; position: absolute; transition: .4s; width: 26px; }
+        input:checked + .slider { background-color: var(--colore-accento); }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .slider.round { border-radius: 34px; }
+        .slider.round:before { border-radius: 50%; }
+        .admin-section h3 { display: flex; justify-content: space-between; align-items: center; }
+        .admin-action-button { background-color: var(--colore-accento); color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 14px; }
+        .category-group { margin-bottom: 10px; border-radius: 12px; overflow: hidden; background-color: var(--colore-card); box-shadow: 0 2px 8px var(--shadow-color); }
+        .category-header { background-color: var(--colore-principale); color: white; padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .category-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .category-content.open { max-height: 2000px; }
+        .admin-list .list-item { border-left: none; padding: 15px; border-bottom: 1px solid var(--colore-bordo-default); border-radius: 0; box-shadow: none; display: flex; justify-content: space-between; align-items: center; }
+        .list-item-header { flex-grow: 1; cursor: pointer; }
+        .list-item .list-item-body { max-height: 0; overflow: hidden; transition: all 0.3s ease-out; padding-left: 10px; }
+        .list-item.is-open .list-item-body { max-height: 100px; padding-top: 10px; }
+        .admin-list .list-item:last-child { border-bottom: none; }
+        .modal-form { display: flex; flex-direction: column; gap: 15px; }
+        .modal-form label { font-weight: 700; font-size: 14px; color: var(--colore-grigio-testo); text-align: left; }
+        .modal-form input, .modal-form select, .modal-form textarea { width: 100%; padding: 12px; border: 1px solid var(--colore-bordo-default); border-radius: 8px; font-size: 16px; background-color: var(--colore-sfondo-pagina); color: var(--colore-testo); box-sizing: border-box; }
+        .modal-form button { background-color: var(--colore-pulsante); color: #111; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
+        .list-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+        .list-item-actions .admin-action-button { font-size: 12px; padding: 5px 10px; }
+        .btn-remove { background-color: #c0392b !important; }
+
+        .loading-spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--colore-principale); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
+<body class="dark-mode">
 
     <div id="login-screen">
-        <header class="app-header">
-            <img src="logo.png" alt="Logo Evento" class="logo">
-            <h1>Volontari Abbadiadi 2025</h1>
-        </header>
-        <div class="login-container">
-            <div class="login-card">
-                <h2>Accesso volontari</h2>
-                <input type="email" id="email-input" placeholder="Inserisci la tua email">
-                <button id="login-button">Accedi</button>
-                <p id="error-message" class="error-message"></p>
-            </div>
+        <div class="login-card">
+            <img src="logo.png" onerror="this.style.display='none'" alt="Logo Evento" class="login-logo">
+            <h1>Volontari Abbadiadi</h1>
+            <h2>Accesso</h2>
+            <input type="email" id="email-input" placeholder="La tua email">
+            <button id="login-button">Accedi</button>
+            <p id="error-message" class="error-message"></p>
         </div>
     </div>
 
@@ -138,141 +131,219 @@
         <header class="app-header-main">
             <h1 id="main-title">I Miei Turni</h1>
             <div class="top-right-nav">
-                <button id="logout-button" title="Esci dall'app">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <button id="btn-notifiche" class="icon-button" title="Notifiche">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </button>
+                <button id="btn-profilo" class="icon-button" title="Profilo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 </button>
             </div>
         </header>
 
         <main class="container">
-            <div id="turni-list">
+            <div id="view-turni" class="view active"><div id="turni-list"></div></div>
+            <div id="view-admin" class="view">
+                <h2>Pannello di Controllo</h2>
+                <div class="admin-section">
+                    <h3><span>Tutti i Volontari</span><button id="btn-add-volunteer" class="admin-action-button">+ Aggiungi</button></h3>
+                    <div id="admin-volontari-list" class="admin-list"></div>
                 </div>
+                <div class="admin-section">
+                    <h3><span>Tutti i Turni</span><button id="btn-crea-turno" class="admin-action-button">+ Crea Turno</button></h3>
+                    <div id="admin-turni-accordion"></div>
+                </div>
+            </div>
         </main>
+        
+        <nav class="bottom-nav">
+            <button id="nav-turni" class="nav-button active"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span>Turni</span></button>
+            <button id="nav-admin" class="nav-button hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Admin</span></button>
+        </nav>
     </div>
+
+    <!-- MODALI FLOTTANTI -->
+    <div id="modal-notifiche" class="modal-overlay"><div class="modal-content"><button class="modal-close-button">&times;</button><h2>Notifiche</h2><p>Contenuto in arrivo...</p></div></div>
+    <div id="modal-profilo" class="modal-overlay"><div class="modal-content"><button class="modal-close-button">&times;</button><h2>Il Mio Profilo</h2><div class="profilo-card"><h3 id="profilo-nome"></h3><p id="profilo-email"></p><p id="profilo-ruolo"></p><div class="theme-switch-wrapper"><span>Modalità Scura</span><label class="theme-switch" for="theme-toggle"><input type="checkbox" id="theme-toggle" /><div class="slider round"></div></label></div><button id="logout-button" class="logout-button-profilo">Esci</button></div></div></div>
+    <div id="modal-add-volunteer" class="modal-overlay"><div class="modal-content"><button class="modal-close-button">&times;</button><h2>Aggiungi Volontario</h2><form id="form-add-volunteer" class="modal-form"><input type="email" name="email" placeholder="Email" required><input type="text" name="nome" placeholder="Nome" required><input type="text" name="cognome" placeholder="Cognome" required><input type="tel" name="telefono" placeholder="Telefono"><select name="ruolo" required><option value="Volontario">Volontario</option><option value="Responsabile">Responsabile</option><option value="Admin">Admin</option></select><button type="submit">Aggiungi</button></form></div></div>
+    <div id="modal-crea-turno" class="modal-overlay"><div class="modal-content"><button class="modal-close-button">&times;</button><h2>Crea Nuovo Turno</h2><form id="form-crea-turno" class="modal-form"><input type="text" name="id_turno" placeholder="ID Turno (es. ACC-05)" required><input type="text" name="categoria" placeholder="Categoria (es. Accoglienza)" required><input type="text" name="nome_turno" placeholder="Nome Turno" required><textarea name="descrizione" placeholder="Descrizione compiti..." rows="3"></textarea><input type="text" name="luogo" placeholder="Luogo" required><input type="text" name="data_inizio" placeholder="Data (GG/MM/AAAA)" value="13/06/2025" required><input type="text" name="ora_inizio" placeholder="Ora Inizio (HH:MM)" required><input type="text" name="ora_fine" placeholder="Ora Fine (HH:MM)" required><button type="submit">Salva Turno</button></form></div></div>
+    <div id="modal-assegna-volontario" class="modal-overlay"><div class="modal-content"><button class="modal-close-button">&times;</button><h2>Assegna Volontario</h2><p><strong>Turno:</strong> <span id="assegna-nome-turno"></span></p><form id="form-assegna-volontario" class="modal-form"><input type="hidden" id="assegna-id-turno" name="id_turno"><label for="select-volontario">Scegli un volontario:</label><select id="select-volontario" name="email_volontario" required></select><button type="submit">Conferma</button></form></div></div>
+    <div id="modal-view-volunteer" class="modal-overlay"><div class="modal-content"><button class="modal-close-button">&times;</button><h2 id="view-volunteer-title"></h2><div id="view-volunteer-turni" class="admin-list"></div></div></div>
+    <div id="modal-confirm" class="modal-overlay"><div class="modal-content" style="text-align: center;"><h3 id="confirm-title">Sei sicuro?</h3><p id="confirm-message"></p><div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;"><button id="btn-confirm-cancel" class="admin-action-button" style="background-color: var(--colore-grigio-testo);">Annulla</button><button id="btn-confirm-yes" class="btn-remove">Conferma</button></div></div></div>
 
     <div id="loading-spinner" class="loading-spinner hidden"></div>
 
     <script>
-        // VERSIONE ALL-IN-ONE STABILE
-
-        const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DI_DEPLOYMENT"; // IMPORTANTE!
-
-        // Riferimenti agli elementi HTML
-        const loginScreen = document.getElementById('login-screen');
-        const mainApp = document.getElementById('main-app');
-        const emailInput = document.getElementById('email-input');
-        const loginButton = document.getElementById('login-button');
-        const errorMessage = document.getElementById('error-message');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const turniList = document.getElementById('turni-list');
-        const logoutButton = document.getElementById('logout-button');
-
-        // === LOGICA DI AUTENTICAZIONE E DATI ===
-        function logout() {
-            localStorage.removeItem('userEmail');
-            location.reload();
-        }
-
-        async function caricaDati(email) {
-            loadingSpinner.classList.remove('hidden');
-            loginScreen.classList.add('hidden');
-            mainApp.classList.add('hidden');
-            errorMessage.innerHTML = '';
-            
-            try {
-                const response = await fetch(`${SCRIPT_URL}?email=${encodeURIComponent(email)}`);
-                const data = await response.json();
-                if (data.error) throw new Error(data.error);
-
-                loginScreen.classList.add('hidden');
-                mainApp.classList.remove('hidden');
-                
-                mostraTurni(data);
-                
-            } catch (error) {
-                alert("Si è verificato un errore: " + error.message);
-                logout();
-            } finally {
-                loadingSpinner.classList.add('hidden');
-            }
-        }
-
-        function mostraTurni(data) {
-            turniList.innerHTML = '';
-            const turniPersonali = data.turni || [];
-
-            if (turniPersonali.length === 0) {
-                turniList.innerHTML = '<p style="text-align: center; color: var(--colore-grigio-testo);">Nessun turno assegnato.</p>';
-                return;
-            }
-
-            const now = new Date();
-            const parseDateTime = (turno) => {
-                const dateParts = turno['Data Inizio'].split('/');
-                const timeParts = turno['Ora Inizio'].split(':');
-                return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
-            };
-            
-            const parseFineDateTime = (turno) => {
-                const dateParts = turno['Data Inizio'].split('/');
-                const timeParts = turno['Ora Fine'].split(':');
-                return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
-            };
-
-            turniPersonali.forEach(turno => {
-                const card = document.createElement('div');
-                card.className = 'turno-card';
-
-                const fine = parseFineDateTime(turno);
-                if (now > fine) {
-                    card.classList.add('passato');
-                }
-                if (turno.Categoria) {
-                    const categoriaClasse = 'categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-');
-                    card.classList.add(categoriaClasse);
-                }
-                
-                const orario = `${turno['Ora Inizio']} - ${turno['Ora Fine']}`;
-                card.innerHTML = `
-                    <h3>${turno['Nome Turno']}</h3>
-                    <p class="turno-orario">${orario}</p>
-                    <p class="turno-luogo">📍 ${turno.Luogo}</p>
-                    <p class="turno-descrizione">${turno.Descrizione}</p>`;
-                turniList.appendChild(card);
-            });
-        }
-
-        // === GESTIONE EVENTI ===
-        logoutButton.addEventListener('click', logout);
-
-        loginButton.addEventListener('click', () => {
-            const email = emailInput.value.trim();
-            if (email) {
-                localStorage.setItem('userEmail', email);
-                caricaDati(email);
-            }
-        });
-
-        emailInput.addEventListener('keyup', e => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                loginButton.click();
-            }
-        });
-
-        document.addEventListener('click', e => {
-            const card = e.target.closest('.turno-card');
-            if (card) {
-                card.classList.toggle('aperta');
-            }
-        });
-
         document.addEventListener('DOMContentLoaded', () => {
-            const savedEmail = localStorage.getItem('userEmail');
-            if (savedEmail) {
-                loginScreen.classList.add('hidden');
-                caricaDati(savedEmail);
+            const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGBfTMG5HXMexcjBtOL8HCb4v8AQCe2Gnqpp5Dn4WJHGxm1cNdIWSSNJ7ZjqakQglH2w/exec"; 
+            
+            const refs = {
+                loginScreen: document.getElementById('login-screen'), mainApp: document.getElementById('main-app'),
+                emailInput: document.getElementById('email-input'), loginButton: document.getElementById('login-button'),
+                loadingSpinner: document.getElementById('loading-spinner'), turniList: document.getElementById('turni-list'),
+                mainTitle: document.getElementById('main-title'), modalNotifiche: document.getElementById('modal-notifiche'),
+                modalProfilo: document.getElementById('modal-profilo'), errorMessage: document.getElementById('error-message'),
+                themeToggle: document.getElementById('theme-toggle'), navAdmin: document.getElementById('nav-admin'),
+                adminVolontariList: document.getElementById('admin-volontari-list'), adminTurniAccordion: document.getElementById('admin-turni-accordion'),
+                btnCreaTurno: document.getElementById('btn-crea-turno'), btnAddVolunteer: document.getElementById('btn-add-volunteer'),
+                modalCreaTurno: document.getElementById('modal-crea-turno'), modalAssegnaVolontario: document.getElementById('modal-assegna-volontario'),
+                modalAddVolunteer: document.getElementById('modal-add-volunteer'), modalViewVolunteer: document.getElementById('modal-view-volunteer'),
+                modalConfirm: document.getElementById('modal-confirm'),
+                formCreaTurno: document.getElementById('form-crea-turno'), formAssegnaVolontario: document.getElementById('form-assegna-volontario'),
+                formAddVolunteer: document.getElementById('form-add-volunteer'), logoutButton: document.getElementById('logout-button')
+            };
+            
+            let currentUserData = null;
+            let actionToConfirm = null;
+
+            function logout() { localStorage.removeItem('userEmail'); location.reload(); }
+
+            async function postData(action, data) {
+                refs.loadingSpinner.classList.remove('hidden');
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ email: localStorage.getItem('userEmail'), action: action, data: data })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'error') throw new Error(result.message);
+                    alert(result.message);
+                    location.reload(); 
+                } catch (error) {
+                    alert("Errore: " + error.message);
+                } finally {
+                    refs.loadingSpinner.classList.add('hidden');
+                }
             }
+            
+            async function caricaDati(email) {
+                refs.loadingSpinner.classList.remove('hidden');
+                refs.loginScreen.style.display = 'none';
+                refs.errorMessage.style.display = 'none';
+                try {
+                    const response = await fetch(`${SCRIPT_URL}?email=${encodeURIComponent(email)}`);
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error);
+                    currentUserData = data;
+                    refs.mainApp.classList.remove('hidden');
+                    showView('view-turni');
+                    mostraTurniPersonali(data);
+                    impostaProfilo(data);
+
+                    if (data.user.ruolo === 'Admin' || data.user.ruolo === 'Responsabile') {
+                        refs.navAdmin.classList.remove('hidden');
+                        mostraPannelloAdmin(data);
+                    }
+                } catch (error) {
+                    if (error.message.includes("Utente non trovato")) {
+                        refs.errorMessage.innerHTML = 'Utente non registrato. <br>Contatta <a href="mailto:abbadiadi.social@gmail.com">abbadiadi.social@gmail.com</a>';
+                    } else { refs.errorMessage.textContent = "Si è verificato un errore di rete. Riprova."; }
+                    refs.loginScreen.style.display = 'flex';
+                    refs.errorMessage.style.display = 'block';
+                    refs.mainApp.classList.add('hidden');
+                    localStorage.removeItem('userEmail');
+                } finally {
+                    refs.loadingSpinner.classList.add('hidden');
+                }
+            }
+            
+            function mostraTurniPersonali(data) {
+                refs.turniList.innerHTML = '';
+                const turniPersonali = data.turni || [];
+                if (turniPersonali.length === 0) { refs.turniList.innerHTML = '<p style="text-align: center;">Nessun turno assegnato.</p>'; return; }
+                const now = new Date();
+                const parseDateTime = (dateStr, timeStr) => { const dateParts = dateStr.split('/'); const timeParts = timeStr.split(':'); return new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]), parseInt(timeParts[0]), parseInt(timeParts[1])); };
+                turniPersonali.forEach(turno => {
+                    const card = document.createElement('div'); card.className = 'turno-card';
+                    const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
+                    if (now > fine) card.classList.add('passato');
+                    if (turno.Categoria) card.classList.add('categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g,'-'));
+                    card.innerHTML = `<div class="turno-card-header"><div class="turno-card-header-content"><h3>${turno['Nome Turno']}</h3><p class="turno-orario">${turno['Ora Inizio']} - ${turno['Ora Fine']}</p></div><div class="expand-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><div class="turno-card-body"><p><strong>Data:</strong> ${turno['Data Inizio']}</p><p><strong>Luogo:</strong> 📍 ${turno.Luogo}</p><p><strong>Descrizione:</strong></p><p>${turno.Descrizione}</p></div>`;
+                    refs.turniList.appendChild(card);
+                });
+            }
+            
+            function mostraPannelloAdmin(data) {
+                refs.adminVolontariList.innerHTML = '';
+                const tuttiIVolontari = data.tuttiIVolontari || [];
+                tuttiIVolontari.forEach(v => { const item = document.createElement('div'); item.className = 'list-item'; item.innerHTML = `<div class="list-item-header"><h4>${v.Nome} ${v.Cognome}</h4></div><div class="list-item-body"><p>${v.Email} - Ruolo: ${v.Ruolo}</p><p>Tel: ${v.Telefono || 'N/D'}</p></div><div class="list-item-actions"><button class="admin-action-button btn-view" data-email="${v.Email}" data-nome="${v.Nome} ${v.Cognome}">Vedi Turni</button><button class="admin-action-button btn-remove" data-email="${v.Email}">Rimuovi</button></div>`; refs.adminVolontariList.appendChild(item); });
+                const turniByCategory = (data.tuttiITurni || []).reduce((acc, t) => { (acc[t.Categoria || 'Senza Categoria'] = acc[t.Categoria || 'Senza Categoria'] || []).push(t); return acc; }, {});
+                refs.adminTurniAccordion.innerHTML = '';
+                for (const category in turniByCategory) {
+                    const group = document.createElement('div'); group.className = 'category-group';
+                    const header = document.createElement('div'); header.className = 'category-header';
+                    header.innerHTML = `<h4>${category} (${turniByCategory[category].length})</h4><span>▼</span>`;
+                    const content = document.createElement('div'); content.className = 'category-content admin-list';
+                    turniByCategory[category].forEach(turno => {
+                        const item = document.createElement('div'); item.className = 'list-item';
+                        item.innerHTML = `<div><h4>${turno['Nome Turno']}</h4><p>${turno['Data Inizio']} | ${turno['Ora Inizio']}-${turno['Ora Fine']}</p></div><div class="list-item-actions"><button class="admin-action-button btn-assegna" data-id-turno="${turno.ID_Turno}" data-nome-turno="${turno['Nome Turno']}">Assegna</button><button class="admin-action-button btn-remove btn-remove-shift" data-id-turno="${turno.ID_Turno}">Rimuovi</button></div>`;
+                        content.appendChild(item);
+                    });
+                    group.appendChild(header); group.appendChild(content);
+                    refs.adminTurniAccordion.appendChild(group);
+                }
+                const selectVolontario = document.getElementById('select-volontario');
+                selectVolontario.innerHTML = '<option value="">Seleziona...</option>';
+                tuttiIVolontari.forEach(v => { const option = document.createElement('option'); option.value = v.Email; option.textContent = `${v.Nome} ${v.Cognome}`; selectVolontario.appendChild(option); });
+            }
+
+            function mostraTurniDelVolontario(email, nome) {
+                document.getElementById('view-volunteer-title').textContent = `Turni di ${nome}`;
+                const listaTurni = document.getElementById('view-volunteer-turni');
+                listaTurni.innerHTML = '';
+                const assegnazioni = currentUserData.tutteLeAssegnazioni.filter(a => a.Email_Volontario.trim().toLowerCase() === email.trim().toLowerCase());
+                if (assegnazioni.length === 0) { listaTurni.innerHTML = '<p>Nessun turno assegnato.</p>'; openModal(refs.modalViewVolunteer); return; }
+                assegnazioni.forEach(a => {
+                    const turnoDettaglio = currentUserData.tuttiITurni.find(t => t.ID_Turno.trim() === a.ID_Turno.trim());
+                    if (turnoDettaglio) {
+                        const item = document.createElement('div'); item.className = 'list-item';
+                        item.innerHTML = `<div><h4>${turnoDettaglio['Nome Turno']}</h4><p>${turnoDettaglio['Data Inizio']} | ${turnoDettaglio['Ora Inizio']}-${turnoDettaglio['Ora Fine']}</p></div><button class="admin-action-button btn-remove btn-unassign" data-email="${email}" data-id-turno="${a.ID_Turno}">Rimuovi</button>`;
+                        listaTurni.appendChild(item);
+                    }
+                });
+                openModal(refs.modalViewVolunteer);
+            }
+            
+            function showConfirmModal(message, title, onConfirm) { document.getElementById('confirm-title').textContent = title; document.getElementById('confirm-message').textContent = message; actionToConfirm = onConfirm; openModal(refs.modalConfirm); }
+            function impostaProfilo(data) { document.getElementById('profilo-nome').textContent = data.user.nome; document.getElementById('profilo-email').textContent = localStorage.getItem('userEmail'); document.getElementById('profilo-ruolo').textContent = `Ruolo: ${data.user.ruolo}`; }
+            function showView(viewId) { document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); const viewElement = document.getElementById(viewId); if(viewElement) viewElement.classList.add('active'); const titles = { 'view-turni': 'I Miei Turni', 'view-admin': 'Pannello Admin' }; refs.mainTitle.textContent = titles[viewId] || 'Volontari'; document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active')); const activeButton = document.getElementById(`nav-${viewId.split('-')[1]}`); if(activeButton) activeButton.classList.add('active'); }
+            function openModal(modalElement) { modalElement.classList.add('visible'); }
+            function closeModal(modalElement) { modalElement.classList.remove('visible'); }
+            function setTheme(theme) { document.body.classList.toggle('dark-mode', theme === 'dark'); refs.themeToggle.checked = theme === 'dark'; localStorage.setItem('theme', theme); }
+
+            // EVENT LISTENERS
+            document.body.addEventListener('click', e => {
+                if(e.target.closest('#btn-notifiche')) openModal(refs.modalNotifiche);
+                if(e.target.closest('#btn-profilo')) openModal(refs.modalProfilo);
+                if(e.target.closest('.modal-close-button')) closeModal(e.target.closest('.modal-overlay'));
+                if(e.target.matches('.modal-overlay')) closeModal(e.target);
+                if(e.target.closest('#logout-button')) logout();
+                if(e.target.closest('#login-button')) { const email = refs.emailInput.value.trim(); if(email) caricaDati(email); }
+                if(e.target.closest('.turno-card-header')) e.target.closest('.turno-card').classList.toggle('is-open');
+                if(e.target.closest('.list-item-header')) e.target.closest('.list-item').classList.toggle('is-open');
+                if(e.target.closest('#btn-crea-turno')) openModal(refs.modalCreaTurno);
+                if(e.target.closest('#btn-add-volunteer')) openModal(refs.modalAddVolunteer);
+                if(e.target.matches('.btn-assegna')) { document.getElementById('assegna-id-turno').value = e.target.dataset.idTurno; document.getElementById('assegna-nome-turno').textContent = e.target.dataset.nomeTurno; openModal(refs.modalAssegnaVolontario); }
+                if(e.target.matches('.btn-view')) mostraTurniDelVolontario(e.target.dataset.email, e.target.dataset.nome);
+                if(e.target.matches('.btn-remove[data-email]')) { const email = e.target.dataset.email; showConfirmModal(`Rimuovere il volontario ${email}?`, 'Conferma Eliminazione', () => postData('remove_volunteer', { email_volontario: email })); }
+                if(e.target.matches('.btn-remove-shift')) { const idTurno = e.target.dataset.idTurno; showConfirmModal(`Rimuovere il turno ${idTurno}?`, 'Conferma Eliminazione', () => postData('remove_shift', { id_turno: idTurno })); }
+                if(e.target.matches('.btn-unassign')) { const { email, idTurno } = e.target.dataset; showConfirmModal(`Rimuovere questa assegnazione?`, 'Conferma Rimozione', () => postData('unassign_volunteer', { email_volontario: email, id_turno: idTurno })); }
+                if(e.target.matches('#btn-confirm-yes')) { if(actionToConfirm) actionToConfirm(); closeModal(refs.modalConfirm); }
+                if(e.target.matches('#btn-confirm-cancel')) closeModal(refs.modalConfirm);
+                if(e.target.closest('.category-header')) { e.target.closest('.category-group').querySelector('.category-content').classList.toggle('open'); }
+            });
+            
+            refs.emailInput.addEventListener('keyup', e => { if (e.key === 'Enter') { e.preventDefault(); refs.loginButton.click(); } });
+            refs.themeToggle.addEventListener('change', () => { setTheme(refs.themeToggle.checked ? 'dark' : 'light'); });
+            document.querySelectorAll('.nav-button').forEach(button => { button.addEventListener('click', () => { const viewName = button.id.split('-')[1]; showView(`view-${viewName}`); }); });
+            refs.formCreaTurno.addEventListener('submit', (e) => { e.preventDefault(); const formData = Object.fromEntries(new FormData(e.target)); postData('create_shift', formData); });
+            refs.formAssegnaVolontario.addEventListener('submit', (e) => { e.preventDefault(); const formData = Object.fromEntries(new FormData(e.target)); if (!formData.email_volontario) { alert("Per favore, seleziona un volontario."); return; } postData('assign_volunteer', formData); });
+            refs.formAddVolunteer.addEventListener('submit', e => { e.preventDefault(); const formData = Object.fromEntries(new FormData(e.target)); postData('add_volunteer', formData); });
+            
+            // CARICAMENTO INIZIALE
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+            const savedEmail = localStorage.getItem('userEmail');
+            if (savedEmail) { refs.loginScreen.style.display = 'none'; caricaDati(savedEmail); }
         });
     </script>
 </body>
