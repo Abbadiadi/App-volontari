@@ -1,21 +1,34 @@
-// VERSIONE 4.3 - FIX DEFINITIVO SUL NOME DELLA VARIABILE
+// VERSIONE 5.0 - Fornita in 3 parti per evitare errori di troncamento
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxmMpsXfe8_arpX-ZBnU_nPQc7EfNSPeTyWi3SVejl6dGZSR8MAeNQVnvtmNkJ--xGcQ/exec"; // IMPORTANTE!
+const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT"; // IMPORTANTE!
 
-// Riferimenti agli elementi HTML
+// Riferimenti a tutti gli elementi HTML usati nello script
 const loginScreen = document.getElementById('login-screen');
 const mainApp = document.getElementById('main-app');
-// ... (tutti gli altri riferimenti fino a adminTurniList rimangono uguali)
+const emailInput = document.getElementById('email-input');
+const loginButton = document.getElementById('login-button');
+const errorMessage = document.getElementById('error-message');
+const loadingSpinner = document.getElementById('loading-spinner');
+const mainTitle = document.getElementById('main-title');
+const turniList = document.getElementById('turni-list');
+const allViews = document.querySelectorAll('.view');
+const logoutButton = document.getElementById('logout-button');
+const navButtons = document.querySelectorAll('.nav-button');
+const navAdmin = document.getElementById('nav-admin');
+const adminVolontariList = document.getElementById('admin-volontari-list');
 const adminTurniList = document.getElementById('admin-turni-list');
 
-
-// === LOGICA DI NAVIGAZIONE (invariata) ===
+// === LOGICA DI NAVIGAZIONE ===
 function showView(viewId) {
-    document.querySelectorAll('.view').forEach(view => view.style.display = 'none');
+    allViews.forEach(view => {
+        view.style.display = 'none';
+    });
     const targetView = document.getElementById(viewId);
-    if (targetView) targetView.style.display = 'block';
+    if (targetView) {
+        targetView.style.display = 'block';
+    }
 
-    document.querySelectorAll('.nav-button').forEach(button => {
+    navButtons.forEach(button => {
         button.classList.remove('active');
         const buttonViewName = button.id.split('-')[1];
         if (`view-${buttonViewName}` === viewId) {
@@ -27,8 +40,7 @@ function showView(viewId) {
     });
 }
 
-
-// === LOGICA DI AUTENTICAZIONE E DATI (invariata) ===
+// === LOGICA DI AUTENTICAZIONE E DATI ===
 function logout() {
     localStorage.removeItem('userEmail');
     location.reload();
@@ -38,10 +50,10 @@ async function caricaDati(email) {
     loadingSpinner.classList.remove('hidden');
     loginScreen.style.display = 'none';
     mainApp.style.display = 'none';
-    document.getElementById('error-message').classList.add('hidden');
+    errorMessage.classList.add('hidden');
     
     try {
-        const response = await fetch(`<span class="math-inline">\{SCRIPT\_URL\}?email\=</span>{encodeURIComponent(email)}`);
+        const response = await fetch(`${SCRIPT_URL}?email=${encodeURIComponent(email)}`);
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
@@ -53,7 +65,7 @@ async function caricaDati(email) {
 
         if (data.user.ruolo === 'Admin' || data.user.ruolo === 'Responsabile') {
             console.log("Utente con privilegi. Abilito funzioni e vista Admin.");
-            document.getElementById('nav-admin').classList.remove('hidden');
+            navAdmin.classList.remove('hidden');
             mostraPannelloAdmin(data);
         }
         
@@ -66,17 +78,11 @@ async function caricaDati(email) {
     }
 }
 
-
-// === FUNZIONI PER MOSTRARE I CONTENUTI (con la correzione) ===
+// === FUNZIONI PER MOSTRARE I CONTENUTI ===
 
 function mostraTurniPersonali(data) {
-    const turniList = document.getElementById('turni-list');
     turniList.innerHTML = '';
-    
-    // --- ECCO LA CORREZIONE! ---
-    // Prima cercava `data.turniPersonali`, ora cerca `data.turni`
     const turniPersonali = data.turni || [];
-    // ---------------------------
 
     if (turniPersonali.length === 0) {
         turniList.innerHTML = '<p style="text-align: center; color: var(--colore-grigio-testo);">Nessun turno personale assegnato.</p>';
@@ -97,10 +103,15 @@ function mostraTurniPersonali(data) {
     turniPersonali.forEach(turno => {
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
-        if (now >= inizio && now <= fine) turnoAttuale = turno;
-        else if (now > fine) turniPassati.push(turno);
-        else turniFuturi.push(turno);
+        if (now >= inizio && now <= fine) {
+            turnoAttuale = turno;
+        } else if (now > fine) {
+            turniPassati.push(turno);
+        } else {
+            turniFuturi.push(turno);
+        }
     });
+    
     turniPassati.reverse();
 
     const turniOrdinati = [
@@ -112,50 +123,61 @@ function mostraTurniPersonali(data) {
     turniOrdinati.forEach(turno => {
         const card = document.createElement('div');
         card.className = 'turno-card';
+
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
-        if (now >= inizio && now <= fine) card.classList.add('attuale');
-        else if (now > fine) card.classList.add('passato');
-        if (turno.Categoria) card.classList.add('categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-'));
+        if (now >= inizio && now <= fine) {
+            card.classList.add('attuale');
+        } else if (now > fine) {
+            card.classList.add('passato');
+        }
+
+        if (turno.Categoria) {
+            const categoriaClasse = 'categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-');
+            card.classList.add(categoriaClasse);
+        }
         
         const orario = `${turno['Ora Inizio']} - ${turno['Ora Fine']}`;
         card.innerHTML = `
-            <h3><span class="math-inline">\{turno\['Nome Turno'\]\}</h3\>
-<p class\="turno\-orario"\></span>{orario}</p>
-            <p class="turno-luogo">📍 <span class="math-inline">\{turno\.Luogo\}</p\>
-<p class\="turno\-descrizione"\></span>{turno.Descrizione}</p>`;
+            <h3>${turno['Nome Turno']}</h3>
+            <p class="turno-orario">${orario}</p>
+            <p class="turno-luogo">📍 ${turno.Luogo}</p>
+            <p class="turno-descrizione">${turno.Descrizione}</p>`;
         turniList.appendChild(card);
     });
 }
 
 function mostraPannelloAdmin(data) {
-    const adminVolontariList = document.getElementById('admin-volontari-list');
-    const adminTurniList = document.getElementById('admin-turni-list');
     adminVolontariList.innerHTML = '';
     adminTurniList.innerHTML = '';
-
     const tuttiIVolontari = data.tuttiIVolontari || [];
     const tuttiITurni = data.tuttiITurni || [];
 
-    tuttiIVolontari.forEach(volontario => {
-        const item = document.createElement('div');
-        item.className = 'list-item';
-        item.innerHTML = `<h4>${volontario.Nome} <span class="math-inline">\{volontario\.Cognome\}</h4\><p\></span>{volontario.Email} - Ruolo: ${volontario.Ruolo}</p>`;
-        adminVolontariList.appendChild(item);
-    });
+    if (tuttiIVolontari.length > 0) {
+        tuttiIVolontari.forEach(volontario => {
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = `<h4>${volontario.Nome} ${volontario.Cognome}</h4><p>${volontario.Email} - Ruolo: ${volontario.Ruolo}</p>`;
+            adminVolontariList.appendChild(item);
+        });
+    }
 
-    tuttiITurni.forEach(turno => {
-        const item = document.createElement('div');
-        item.className = 'list-item';
-        item.innerHTML = `<h4><span class="math-inline">\{turno\['Nome Turno'\]\}</h4\><p\></span>{turno['Data Inizio']} | <span class="math-inline">\{turno\['Ora Inizio'\]\}\-</span>{turno['Ora Fine']} @ ${turno.Luogo}</p>`;
-        adminTurniList.appendChild(item);
-    });
+    if (tuttiITurni.length > 0) {
+        tuttiITurni.forEach(turno => {
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = `<h4>${turno['Nome Turno']}</h4><p>${turno['Data Inizio']} | ${turno['Ora Inizio']}-${turno['Ora Fine']} @ ${turno.Luogo}</p>`;
+            adminTurniList.appendChild(item);
+        });
+    }
 }
 
-
 // === GESTIONE EVENTI GLOBALI ===
-document.getElementById('logout-button').addEventListener('click', logout);
 
+// Event listener per il pulsante di logout
+logoutButton.addEventListener('click', logout);
+
+// Event listener per i pulsanti di navigazione
 document.querySelectorAll('.nav-button').forEach(button => {
     button.addEventListener('click', () => {
         const viewName = button.id.split('-')[1];
@@ -163,20 +185,22 @@ document.querySelectorAll('.nav-button').forEach(button => {
     });
 });
 
-document.getElementById('login-button').addEventListener('click', () => {
-    const email = document.getElementById('email-input').value.trim();
+// Event listener per il login
+loginButton.addEventListener('click', () => {
+    const email = emailInput.value.trim();
     if (email) {
         localStorage.setItem('userEmail', email);
         caricaDati(email);
     }
 });
-document.getElementById('email-input').addEventListener('keyup', e => {
+emailInput.addEventListener('keyup', e => {
     if (e.key === 'Enter') {
         e.preventDefault();
-        document.getElementById('login-button').click();
+        loginButton.click();
     }
 });
 
+// Event listener per espandere le card dei turni
 document.addEventListener('click', e => {
     const card = e.target.closest('.turno-card');
     if (card) {
@@ -184,4 +208,13 @@ document.addEventListener('click', e => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', () =>
+// Event listener per il caricamento iniziale della pagina
+document.addEventListener('DOMContentLoaded', () => {
+    const savedEmail = localStorage.getItem('userEmail');
+    if (savedEmail) {
+        loginScreen.classList.add('hidden');
+        caricaDati(savedEmail);
+    } else {
+        loginScreen.classList.remove('hidden');
+    }
+});
