@@ -1,4 +1,4 @@
-// VERSIONE 4.1 - COMPLETA E CORRETTA
+// VERSIONE 4.2 - FINALE, CORRETTA E COMPLETA
 
 const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT"; // IMPORTANTE!
 
@@ -20,9 +20,13 @@ const adminTurniList = document.getElementById('admin-turni-list');
 
 // === LOGICA DI NAVIGAZIONE ===
 function showView(viewId) {
-    allViews.forEach(view => view.style.display = 'none');
+    allViews.forEach(view => {
+        view.style.display = 'none';
+    });
     const targetView = document.getElementById(viewId);
-    if (targetView) targetView.style.display = 'block';
+    if (targetView) {
+        targetView.style.display = 'block';
+    }
 
     navButtons.forEach(button => {
         button.classList.remove('active');
@@ -74,7 +78,7 @@ async function caricaDati(email) {
     }
 }
 
-// --- FUNZIONI PER MOSTRARE I CONTENUTI ---
+// === FUNZIONI PER MOSTRARE I CONTENUTI ===
 
 function mostraTurniPersonali(data) {
     turniList.innerHTML = '';
@@ -99,10 +103,15 @@ function mostraTurniPersonali(data) {
     turniPersonali.forEach(turno => {
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
-        if (now >= inizio && now <= fine) turnoAttuale = turno;
-        else if (now > fine) turniPassati.push(turno);
-        else turniFuturi.push(turno);
+        if (now >= inizio && now <= fine) {
+            turnoAttuale = turno;
+        } else if (now > fine) {
+            turniPassati.push(turno);
+        } else {
+            turniFuturi.push(turno);
+        }
     });
+    
     turniPassati.reverse();
 
     const turniOrdinati = [
@@ -117,8 +126,11 @@ function mostraTurniPersonali(data) {
 
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
-        if (now >= inizio && now <= fine) card.classList.add('attuale');
-        else if (now > fine) card.classList.add('passato');
+        if (now >= inizio && now <= fine) {
+            card.classList.add('attuale');
+        } else if (now > fine) {
+            card.classList.add('passato');
+        }
 
         if (turno.Categoria) {
             const categoriaClasse = 'categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-');
@@ -141,22 +153,25 @@ function mostraPannelloAdmin(data) {
     const tuttiIVolontari = data.tuttiIVolontari || [];
     const tuttiITurni = data.tuttiITurni || [];
 
-    tuttiIVolontari.forEach(volontario => {
-        const item = document.createElement('div');
-        item.className = 'list-item';
-        item.innerHTML = `<h4>${volontario.Nome} ${volontario.Cognome}</h4><p>${volontario.Email} - Ruolo: ${volontario.Ruolo}</p>`;
-        adminVolontariList.appendChild(item);
-    });
+    if (tuttiIVolontari.length > 0) {
+        tuttiIVolontari.forEach(volontario => {
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = `<h4>${volontario.Nome} ${volontario.Cognome}</h4><p>${volontario.Email} - Ruolo: ${volontario.Ruolo}</p>`;
+            adminVolontariList.appendChild(item);
+        });
+    }
 
-    tuttiITurni.forEach(turno => {
-        const item = document.createElement('div');
-        item.className = 'list-item';
-        item.innerHTML = `<h4>${turno['Nome Turno']}</h4><p>${turno['Data Inizio']} | ${turno['Ora Inizio']}-${turno['Ora Fine']} @ ${turno.Luogo}</p>`;
-        adminTurniList.appendChild(item);
-    });
+    if (tuttiITurni.length > 0) {
+        tuttiITurni.forEach(turno => {
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = `<h4>${turno['Nome Turno']}</h4><p>${turno['Data Inizio']} | ${turno['Ora Inizio']}-${turno['Ora Fine']} @ ${turno.Luogo}</p>`;
+            adminTurniList.appendChild(item);
+        });
+    }
 }
-
-// --- GESTIONE EVENTI GLOBALI ---
+// === GESTIONE EVENTI GLOBALI ===
 
 // Event listener per i pulsanti di navigazione
 document.querySelectorAll('.nav-button').forEach(button => {
