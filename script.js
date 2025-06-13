@@ -1,6 +1,6 @@
 // VERSIONE 4.2 - FINALE, CORRETTA E COMPLETA
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwszh1KocVSE2I-L6Hzl5g8yHaWP0-YuLqY_IKE0mTv/dev"; // IMPORTANTE!
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxmMpsXfe8_arpX-ZBnU_nPQc7EfNSPeTyWi3SVejl6dGZSR8MAeNQVnvtmNkJ--xGcQ/exec"; // IMPORTANTE!
 
 // Riferimenti a tutti gli elementi HTML usati nello script
 const loginScreen = document.getElementById('login-screen');
