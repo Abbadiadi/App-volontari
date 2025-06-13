@@ -1,8 +1,8 @@
-// VERSIONE 4.0 - CORRETTA E COMPLETA
+// VERSIONE 4.1 - Definitiva e Corretta
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxmMpsXfe8_arpX-ZBnU_nPQc7EfNSPeTyWi3SVejl6dGZSR8MAeNQVnvtmNkJ--xGcQ/exec"; // IMPORTANTE!
+const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DELLO_SCRIPT"; // IMPORTANTE!
 
-// Riferimenti agli elementi HTML
+// Riferimenti a tutti gli elementi HTML usati nello script
 const loginScreen = document.getElementById('login-screen');
 const mainApp = document.getElementById('main-app');
 const emailInput = document.getElementById('email-input');
@@ -18,15 +18,20 @@ const navAdmin = document.getElementById('nav-admin');
 const adminVolontariList = document.getElementById('admin-volontari-list');
 const adminTurniList = document.getElementById('admin-turni-list');
 
-// === LOGICA DI NAVIGAZIONE ===
+// --- LOGICA DI NAVIGAZIONE ---
 function showView(viewId) {
-    allViews.forEach(view => view.classList.add('hidden'));
+    allViews.forEach(view => {
+        view.style.display = 'none';
+    });
     const targetView = document.getElementById(viewId);
-    if (targetView) targetView.classList.remove('hidden');
+    if (targetView) {
+        targetView.style.display = 'block';
+    }
 
     navButtons.forEach(button => {
         button.classList.remove('active');
-        const buttonViewName = button.id.split('-')[1];
+        // Ricostruisce l'id della vista dal bottone per il confronto
+        const buttonViewName = button.id.split('-')[1]; 
         if (`view-${buttonViewName}` === viewId) {
             button.classList.add('active');
             mainTitle.textContent = button.querySelector('span').textContent;
@@ -34,33 +39,25 @@ function showView(viewId) {
     });
 }
 
-document.querySelectorAll('.nav-button').forEach(button => {
-    button.addEventListener('click', () => {
-        const viewName = button.id.split('-')[1];
-        showView(`view-${viewName}`);
-    });
-});
-
-// === LOGICA DI AUTENTICAZIONE E DATI ===
+// --- LOGICA DI AUTENTICAZIONE E DATI ---
 function logout() {
     localStorage.removeItem('userEmail');
     location.reload();
 }
-logoutButton.addEventListener('click', logout);
 
 async function caricaDati(email) {
     loadingSpinner.classList.remove('hidden');
-    loginScreen.classList.add('hidden');
-    mainApp.classList.add('hidden');
+    loginScreen.style.display = 'none';
+    mainApp.style.display = 'none';
     errorMessage.classList.add('hidden');
     
     try {
-        const response = await fetch(`${SCRIPT_URL}?email=${encodeURIComponent(email)}`);
+        const response = await fetch(`<span class="math-inline">\{SCRIPT\_URL\}?email\=</span>{encodeURIComponent(email)}`);
         const data = await response.json();
         if (data.error) throw new Error(data.error);
 
-        loginScreen.classList.add('hidden');
-        mainApp.classList.remove('hidden');
+        loginScreen.style.display = 'none';
+        mainApp.style.display = 'block';
         showView('view-turni');
         
         mostraTurniPersonali(data);
@@ -80,63 +77,8 @@ async function caricaDati(email) {
     }
 }
 
-function mostraTurniPersonali(data) {
-    turniList.innerHTML = '';
-    const turniPersonali = data.turniPersonali || [];
-    if (turniPersonali.length === 0) {
-        turniList.innerHTML = '<p style="text-align: center; color: var(--colore-grigio-testo);">Nessun turno personale assegnato.</p>';
-        return;
-    }
-    //... (La logica per creare le card dei turni rimane qui)
-}
+// --- FUNZIONI PER MOSTRARE I CONTENUTI ---
 
-function mostraPannelloAdmin(data) {
-    adminVolontariList.innerHTML = '';
-    adminTurniList.innerHTML = '';
-    const tuttiIVolontari = data.tuttiIVolontari || [];
-    const tuttiITurni = data.tuttiITurni || [];
-
-    tuttiIVolontari.forEach(volontario => {
-        const item = document.createElement('div');
-        item.className = 'list-item';
-        item.innerHTML = `<h4>${volontario.Nome} ${volontario.Cognome}</h4><p>${volontario.Email} - Ruolo: ${volontario.Ruolo}</p>`;
-        adminVolontariList.appendChild(item);
-    });
-
-    tuttiITurni.forEach(turno => {
-        const item = document.createElement('div');
-        item.className = 'list-item';
-        item.innerHTML = `<h4>${turno['Nome Turno']}</h4><p>${turno['Data Inizio']} | ${turno['Ora Inizio']}-${turno['Ora Fine']} @ ${turno.Luogo}</p>`;
-        adminTurniList.appendChild(item);
-    });
-}
-
-// === GESTIONE EVENTI ===
-loginButton.addEventListener('click', () => {
-    const email = emailInput.value.trim();
-    if (email) {
-        localStorage.setItem('userEmail', email);
-        caricaDati(email);
-    }
-});
-emailInput.addEventListener('keyup', e => e.key === 'Enter' && loginButton.click());
-
-document.addEventListener('click', e => {
-    const card = e.target.closest('.turno-card');
-    if (card) card.classList.toggle('aperta');
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const savedEmail = localStorage.getItem('userEmail');
-    if (savedEmail) {
-        loginScreen.classList.add('hidden');
-        caricaDati(savedEmail);
-    } else {
-        loginScreen.classList.remove('hidden');
-    }
-});
-
-// Duplico la funzione mostraTurni qui, dato che l'ho accorciata sopra
 function mostraTurniPersonali(data) {
     turniList.innerHTML = '';
     const turniPersonali = data.turniPersonali || [];
@@ -175,23 +117,8 @@ function mostraTurniPersonali(data) {
     turniOrdinati.forEach(turno => {
         const card = document.createElement('div');
         card.className = 'turno-card';
-
         const inizio = parseDateTime(turno['Data Inizio'], turno['Ora Inizio']);
         const fine = parseDateTime(turno['Data Inizio'], turno['Ora Fine']);
         if (now >= inizio && now <= fine) card.classList.add('attuale');
         else if (now > fine) card.classList.add('passato');
-
-        if (turno.Categoria) {
-            const categoriaClasse = 'categoria-' + turno.Categoria.trim().toLowerCase().replace(/\s+/g, '-');
-            card.classList.add(categoriaClasse);
-        }
-        
-        const orario = `${turno['Ora Inizio']} - ${turno['Ora Fine']}`;
-        card.innerHTML = `
-            <h3>${turno['Nome Turno']}</h3>
-            <p class="turno-orario">${orario}</p>
-            <p class="turno-luogo">📍 ${turno.Luogo}</p>
-            <p class="turno-descrizione">${turno.Descrizione}</p>`;
-        turniList.appendChild(card);
-    });
-}
+        if (turno.Categoria) card
