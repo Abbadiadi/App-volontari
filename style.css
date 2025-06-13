@@ -84,23 +84,49 @@ body {
 .list-item h4 { margin: 0 0 5px 0; }
 .list-item p { margin: 0; font-size: 14px; color: var(--colore-grigio-testo); }
 
+// Usa l'ultimo codice completo che ti ho dato, assicurandoti che la sezione
+// degli stili per .turno-card sia questa:
+
 .turno-card {
-    background-color: var(--colore-card); border-radius: 16px; padding: 20px;
-    margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border-left: 6px solid var(--colore-grigio-testo); cursor: pointer;
+    background-color: var(--colore-card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* Rimuoviamo il bordo di default da qui per applicarlo con più specificità */
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-left: 6px solid var(--colore-grigio-testo); /* Grigio di default */
 }
-.turno-card.attuale { border-color: var(--colore-pulsante); transform: scale(1.02); }
-.turno-card.passato { opacity: 0.65; filter: grayscale(50%); }
-.turno-card.passato h3 { text-decoration: line-through; }
+.turno-card.attuale {
+    border-color: var(--colore-pulsante) !important; /* !important per la massima priorità */
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+.turno-card.passato {
+    opacity: 0.65;
+    background-color: #f9f9f9;
+    filter: grayscale(50%);
+    border-left-color: var(--colore-grigio-testo); /* I turni passati hanno il bordo grigio */
+}
+.turno-card.passato h3, .turno-card.passato .turno-orario {
+    text-decoration: line-through;
+}
 .turno-card h3 { margin: 0 0 5px 0; }
 .turno-orario { font-weight: bold; }
 .turno-luogo { font-style: italic; color: #555; margin: 10px 0; }
 .turno-descrizione { display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
 .turno-card.aperta .turno-descrizione { display: block; }
+
+/* Colori specifici per categoria (ora sovrascriveranno il grigio, tranne per i passati) */
 .turno-card.categoria-accoglienza { border-left-color: #17a2b8; }
 .turno-card.categoria-sport { border-left-color: #fd7e14; }
 .turno-card.categoria-cerimonia { border-left-color: #ffc107; }
+.turno-card.categoria-maratonina { border-left-color: #28a745; }
+.turno-card.categoria-staffette { border-left-color: #dc3545; }
 
-/* --- UTILITÀ --- */
-.hidden { display: none !important; }
-.loading-spinner { /* ...stile invariato... */ }
+/* Quando un turno passato è anche attuale (raro), il colore attuale vince */
+.turno-card.passato.attuale {
+    filter: none;
+    opacity: 1;
+}
