@@ -1,6 +1,6 @@
 // VERSIONE 6.0 - STABILE CON NAVIGAZIONE
 
-const SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DI_DEPLOYMENT"; // IMPORTANTE!
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxstSxAWfe0TYzoa8OHXqQL6jMNnGkZZl0L83YxhQJzsKDKtuUVQW3B9FHTF0EXTieA7w/exec"; // IMPORTANTE!
 
 const loginScreen = document.getElementById('login-screen');
 const mainApp = document.getElementById('main-app');
